@@ -1,0 +1,51 @@
+---
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="border-t border-border bg-bg-secondary">
+  <div class="mx-auto max-w-7xl px-6 py-12">
+    <div class="grid grid-cols-2 gap-8 md:grid-cols-4">
+      <div>
+        <h3 class="mb-4 text-sm font-semibold text-text-primary">Product</h3>
+        <ul class="space-y-2">
+          <li><a href="/features" class="text-sm text-text-secondary hover:text-text-primary transition-colors">Features</a></li>
+          <li><a href="/pricing" class="text-sm text-text-secondary hover:text-text-primary transition-colors">Pricing</a></li>
+          <li><a href="/download" class="text-sm text-text-secondary hover:text-text-primary transition-colors">Download</a></li>
+          <li><a href="/docs" class="text-sm text-text-secondary hover:text-text-primary transition-colors">Documentation</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="mb-4 text-sm font-semibold text-text-primary">Compare</h3>
+        <ul class="space-y-2">
+          <li><a href="/compare#tradingview" class="text-sm text-text-secondary hover:text-text-primary transition-colors">vs TradingView</a></li>
+          <li><a href="/compare#trendspider" class="text-sm text-text-secondary hover:text-text-primary transition-colors">vs TrendSpider</a></li>
+          <li><a href="/compare#thinkorswim" class="text-sm text-text-secondary hover:text-text-primary transition-colors">vs Thinkorswim</a></li>
+          <li><a href="/compare#quantconnect" class="text-sm text-text-secondary hover:text-text-primary transition-colors">vs QuantConnect</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="mb-4 text-sm font-semibold text-text-primary">Resources</h3>
+        <ul class="space-y-2">
+          <li><a href="/blog" class="text-sm text-text-secondary hover:text-text-primary transition-colors">Blog</a></li>
+          <li><a href="/docs" class="text-sm text-text-secondary hover:text-text-primary transition-colors">Getting Started</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="mb-4 text-sm font-semibold text-text-primary">Legal</h3>
+        <ul class="space-y-2">
+          <li><a href="/privacy" class="text-sm text-text-secondary hover:text-text-primary transition-colors">Privacy Policy</a></li>
+          <li><a href="/terms" class="text-sm text-text-secondary hover:text-text-primary transition-colors">Terms of Service</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="mt-12 border-t border-border pt-8 flex flex-col items-center gap-4 md:flex-row md:justify-between">
+      <p class="text-sm text-text-secondary">
+        Built by traders, powered by <a href="https://www.anthropic.com" class="text-accent-blue hover:underline" target="_blank" rel="noopener">Claude (Anthropic)</a>.
+      </p>
+      <p class="text-sm text-text-secondary">&copy; {currentYear} TradeStudio. All rights reserved.</p>
+    </div>
+    <p class="mt-4 text-center text-xs text-text-secondary/60">
+      Past performance does not guarantee future results. TradeStudio is a research tool, not investment advice.
+    </p>
+  </div>
+</footer>

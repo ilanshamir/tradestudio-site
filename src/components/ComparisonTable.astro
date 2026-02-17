@@ -1,0 +1,95 @@
+---
+interface Props {
+  compact?: boolean;
+}
+
+const { compact = false } = Astro.props;
+
+const features = [
+  {
+    name: 'AI Strategy Generation',
+    tradestudio: 'NL \u2192 C# \u2192 Backtest',
+    tradingview: '\u2014',
+    trendspider: 'NL \u2192 No-code',
+    thinkorswim: '\u2014',
+    quantconnect: 'Code-first',
+  },
+  {
+    name: 'AI Earnings Backtest',
+    tradestudio: '\u2713 Unique',
+    tradingview: '\u2014',
+    trendspider: '\u2014',
+    thinkorswim: '\u2014',
+    quantconnect: '\u2014',
+  },
+  {
+    name: 'Desktop Performance',
+    tradestudio: 'Native WPF',
+    tradingview: 'Web',
+    trendspider: 'Web',
+    thinkorswim: 'Desktop',
+    quantconnect: 'Web + Local',
+  },
+  {
+    name: 'Custom Scripting',
+    tradestudio: 'C# / Roslyn',
+    tradingview: 'Pine Script',
+    trendspider: 'No-code only',
+    thinkorswim: 'thinkScript',
+    quantconnect: 'C# / Python',
+  },
+  {
+    name: 'Narrative Backtest',
+    tradestudio: '\u2713 Unique',
+    tradingview: '\u2014',
+    trendspider: '\u2014',
+    thinkorswim: '\u2014',
+    quantconnect: '\u2014',
+  },
+  {
+    name: 'Strategy Scanner',
+    tradestudio: '\u2713',
+    tradingview: '\u2713',
+    trendspider: '\u2713',
+    thinkorswim: '\u2713',
+    quantconnect: '\u2014',
+  },
+  {
+    name: 'Price',
+    tradestudio: 'Early Access',
+    tradingview: 'Free\u2013$60/mo',
+    trendspider: '$52\u2013$155/mo',
+    thinkorswim: 'Free (Schwab)',
+    quantconnect: 'Free\u2013$60/mo',
+  },
+];
+
+const displayFeatures = compact ? features.filter(f => ['AI Strategy Generation', 'AI Earnings Backtest', 'Desktop Performance', 'Custom Scripting', 'Price'].includes(f.name)) : features;
+---
+
+<div class="overflow-x-auto">
+  <table class="w-full text-left text-sm">
+    <thead>
+      <tr class="border-b border-border">
+        <th class="py-3 pr-4 font-medium text-text-secondary">Feature</th>
+        <th class="py-3 px-4 font-semibold text-accent-green">TradeStudio</th>
+        <th class="py-3 px-4 font-medium text-text-secondary">TradingView</th>
+        <th class="py-3 px-4 font-medium text-text-secondary">TrendSpider</th>
+        <th class="py-3 px-4 font-medium text-text-secondary">Thinkorswim</th>
+        {!compact && <th class="py-3 px-4 font-medium text-text-secondary">QuantConnect</th>}
+      </tr>
+    </thead>
+    <tbody>
+      {displayFeatures.map(feature => (
+        <tr class="border-b border-border/50">
+          <td class="py-3 pr-4 font-medium text-text-primary">{feature.name}</td>
+          <td class="py-3 px-4 text-accent-green font-medium">{feature.tradestudio}</td>
+          <td class="py-3 px-4 text-text-secondary">{feature.tradingview}</td>
+          <td class="py-3 px-4 text-text-secondary">{feature.trendspider}</td>
+          <td class="py-3 px-4 text-text-secondary">{feature.thinkorswim}</td>
+          {!compact && <td class="py-3 px-4 text-text-secondary">{feature.quantconnect}</td>}
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>

@@ -1,0 +1,31 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg-primary: #0B0C10;
+  --color-bg-secondary: #14151A;
+  --color-bg-tertiary: #1E1F24;
+  --color-text-primary: #E0E4EA;
+  --color-text-secondary: #A0A5AF;
+  --color-accent-green: #26A65B;
+  --color-accent-green-hover: #2FBF6A;
+  --color-accent-red: #EF5350;
+  --color-accent-blue: #A0C4FF;
+  --color-accent-purple: #B388FF;
+  --color-border: #2A2B30;
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
+}
+
+@layer base {
+  html {
+    background-color: var(--color-bg-primary);
+    color: var(--color-text-primary);
+    font-family: var(--font-sans);
+    line-height: 1.6;
+    scroll-behavior: smooth;
+  }
+
+  ::selection {
+    background-color: color-mix(in srgb, var(--color-accent-green) 30%, transparent);
+  }
+}

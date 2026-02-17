@@ -1,0 +1,37 @@
+---
+interface Props {
+  title: string;
+  subtitle: string;
+  primaryCta?: { label: string; href: string };
+  secondaryCta?: { label: string; href: string };
+}
+
+const { title, subtitle, primaryCta, secondaryCta } = Astro.props;
+---
+
+<section class="relative overflow-hidden py-24 md:py-32">
+  <!-- Gradient background -->
+  <div class="absolute inset-0 bg-gradient-to-br from-accent-purple/5 via-bg-primary to-accent-blue/5"></div>
+  <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[600px] bg-accent-purple/3 rounded-full blur-[120px]"></div>
+
+  <div class="relative mx-auto max-w-5xl px-6 text-center">
+    <h1 class="text-4xl font-extrabold leading-tight tracking-tight md:text-6xl lg:text-7xl">
+      <Fragment set:html={title} />
+    </h1>
+    <p class="mx-auto mt-6 max-w-2xl text-lg text-text-secondary md:text-xl">
+      {subtitle}
+    </p>
+    <div class="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
+      {primaryCta && (
+        <a href={primaryCta.href} class="rounded-lg bg-accent-green px-8 py-3.5 text-base font-semibold text-white shadow-lg shadow-accent-green/20 hover:bg-accent-green-hover hover:shadow-accent-green/30 transition-all">
+          {primaryCta.label}
+        </a>
+      )}
+      {secondaryCta && (
+        <a href={secondaryCta.href} class="text-base font-medium text-accent-blue hover:text-text-primary transition-colors">
+          {secondaryCta.label}
+        </a>
+      )}
+    </div>
+  </div>
+</section>

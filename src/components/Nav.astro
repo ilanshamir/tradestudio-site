@@ -1,0 +1,58 @@
+---
+const navLinks = [
+  { href: '/features', label: 'Features' },
+  { href: '/compare', label: 'Compare' },
+  { href: '/pricing', label: 'Pricing' },
+  { href: '/docs', label: 'Docs' },
+  { href: '/blog', label: 'Blog' },
+];
+---
+
+<nav class="fixed top-0 left-0 right-0 z-50 border-b border-border bg-bg-primary/80 backdrop-blur-xl">
+  <div class="mx-auto max-w-7xl flex items-center justify-between px-6 py-4">
+    <a href="/" class="flex items-center gap-2 text-xl font-bold text-text-primary hover:text-accent-green transition-colors">
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none" class="shrink-0">
+        <rect width="28" height="28" rx="6" fill="#26A65B"/>
+        <path d="M7 10h14M7 14h10M7 18h6" stroke="white" stroke-width="2" stroke-linecap="round"/>
+        <circle cx="21" cy="18" r="3" fill="white" opacity="0.8"/>
+      </svg>
+      TradeStudio
+    </a>
+
+    <div class="hidden md:flex items-center gap-8">
+      {navLinks.map(link => (
+        <a href={link.href} class="text-sm text-text-secondary hover:text-text-primary transition-colors">
+          {link.label}
+        </a>
+      ))}
+      <a href="/download" class="rounded-lg bg-accent-green px-4 py-2 text-sm font-semibold text-white hover:bg-accent-green-hover transition-colors">
+        Download
+      </a>
+    </div>
+
+    <button id="mobile-menu-btn" class="md:hidden text-text-secondary hover:text-text-primary" aria-label="Toggle menu">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="3" y1="6" x2="21" y2="6"/>
+        <line x1="3" y1="12" x2="21" y2="12"/>
+        <line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+    </button>
+  </div>
+
+  <div id="mobile-menu" class="hidden md:hidden border-t border-border bg-bg-primary px-6 pb-4">
+    {navLinks.map(link => (
+      <a href={link.href} class="block py-2 text-sm text-text-secondary hover:text-text-primary transition-colors">
+        {link.label}
+      </a>
+    ))}
+    <a href="/download" class="mt-2 block rounded-lg bg-accent-green px-4 py-2 text-center text-sm font-semibold text-white hover:bg-accent-green-hover transition-colors">
+      Download
+    </a>
+  </div>
+</nav>
+
+<script>
+  const btn = document.getElementById('mobile-menu-btn');
+  const menu = document.getElementById('mobile-menu');
+  btn?.addEventListener('click', () => menu?.classList.toggle('hidden'));
+</script>

@@ -1,0 +1,30 @@
+---
+interface Props {
+  title: string;
+  subtitle?: string;
+  primaryCta?: { label: string; href: string };
+  secondaryCta?: { label: string; href: string };
+}
+
+const { title, subtitle, primaryCta, secondaryCta } = Astro.props;
+---
+
+<section class="relative overflow-hidden border-t border-border bg-bg-secondary py-20">
+  <div class="absolute inset-0 bg-gradient-to-r from-accent-green/3 via-transparent to-accent-purple/3"></div>
+  <div class="relative mx-auto max-w-3xl px-6 text-center">
+    <h2 class="text-3xl font-bold md:text-4xl">{title}</h2>
+    {subtitle && <p class="mt-4 text-lg text-text-secondary">{subtitle}</p>}
+    <div class="mt-8 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
+      {primaryCta && (
+        <a href={primaryCta.href} class="rounded-lg bg-accent-green px-8 py-3.5 text-base font-semibold text-white shadow-lg shadow-accent-green/20 hover:bg-accent-green-hover transition-all">
+          {primaryCta.label}
+        </a>
+      )}
+      {secondaryCta && (
+        <a href={secondaryCta.href} class="text-base font-medium text-accent-blue hover:text-text-primary transition-colors">
+          {secondaryCta.label}
+        </a>
+      )}
+    </div>
+  </div>
+</section>

@@ -1,0 +1,136 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import FAQAccordion from '../components/FAQAccordion.astro';
+
+const faqs = [
+  {
+    question: 'Do I need my own API keys?',
+    answer: 'Yes. For AI features, you provide your own Anthropic API key. For market data, Yahoo Finance is free. Premium data providers (Polygon, FMP, AlphaVantage) require their own API keys. This keeps costs transparent — you pay directly for what you use.'
+  },
+  {
+    question: 'What platforms are supported?',
+    answer: 'Windows only — both x64 and ARM64. TradeStudio is a native WPF desktop application built on .NET 10. We chose desktop deliberately for performance-critical charting and real-time data rendering.'
+  },
+  {
+    question: 'Is this a brokerage?',
+    answer: 'No. TradeStudio is a research and analysis platform. It does not execute trades, hold funds, or connect to brokerage accounts. It generates, backtests, and analyzes trading strategies.'
+  },
+  {
+    question: 'How much does the AI cost to use?',
+    answer: 'AI costs depend on your Anthropic API usage. A typical Strategy Lab session (generating and backtesting 3–5 strategies) costs a few cents. An earnings backtest of SPY from 1990 costs roughly $20 the first run, then free forever — predictions are cached locally.'
+  },
+  {
+    question: 'Is there a free trial?',
+    answer: 'TradeStudio is currently in early access. Join the waitlist to get access when it launches.'
+  },
+];
+---
+
+<BaseLayout title="Pricing — TradeStudio" description="TradeStudio pricing and early access information. Join the waitlist to be first in line.">
+
+  <section class="py-20 px-6">
+    <div class="mx-auto max-w-5xl text-center">
+      <h1 class="text-4xl font-extrabold md:text-5xl">Early access</h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-text-secondary">TradeStudio is in early access. Join the waitlist to be first in line.</p>
+    </div>
+  </section>
+
+  <!-- Waitlist Signup -->
+  <section class="border-t border-border bg-bg-secondary py-16 px-6">
+    <div class="mx-auto max-w-lg text-center">
+      <div class="rounded-xl border border-border bg-bg-primary p-8">
+        <div class="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-accent-green/10">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-accent-green">
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+            <polyline points="22,6 12,13 2,6"/>
+          </svg>
+        </div>
+        <h2 class="text-2xl font-bold">Get notified at launch</h2>
+        <p class="mt-2 text-sm text-text-secondary">We'll email you when TradeStudio is ready to download. No spam.</p>
+        <form class="mt-6 flex flex-col gap-3 sm:flex-row" action="#" method="POST">
+          <input
+            type="email"
+            name="email"
+            placeholder="you@example.com"
+            required
+            class="flex-1 rounded-lg border border-border bg-bg-tertiary px-4 py-3 text-sm text-text-primary placeholder:text-text-secondary/50 focus:border-accent-green focus:outline-none focus:ring-1 focus:ring-accent-green"
+          />
+          <button type="submit" class="rounded-lg bg-accent-green px-6 py-3 text-sm font-semibold text-white hover:bg-accent-green-hover transition-colors">
+            Join waitlist
+          </button>
+        </form>
+        <p class="mt-4 text-xs text-text-secondary/60">Bring your own API keys (Anthropic, data providers). No credit card required.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Planned Pricing Preview -->
+  <section class="py-16 px-6">
+    <div class="mx-auto max-w-5xl">
+      <h2 class="mb-2 text-center text-2xl font-bold">Planned pricing</h2>
+      <p class="mb-12 text-center text-sm text-text-secondary">Final pricing will be announced at launch. Here's what we're considering.</p>
+      <div class="grid gap-6 md:grid-cols-3">
+        <!-- Starter -->
+        <div class="rounded-xl border border-border bg-bg-secondary p-6">
+          <h3 class="text-lg font-semibold">Starter</h3>
+          <p class="mt-1 text-sm text-text-secondary">Charting & analysis essentials</p>
+          <div class="mt-4">
+            <span class="text-3xl font-bold">~$49</span>
+            <span class="text-text-secondary">/month</span>
+          </div>
+          <ul class="mt-6 space-y-3 text-sm text-text-secondary">
+            <li class="flex items-start gap-2"><span class="text-accent-green mt-0.5">&#10003;</span> Professional charting</li>
+            <li class="flex items-start gap-2"><span class="text-accent-green mt-0.5">&#10003;</span> 19 built-in indicators</li>
+            <li class="flex items-start gap-2"><span class="text-accent-green mt-0.5">&#10003;</span> Built-in strategies</li>
+            <li class="flex items-start gap-2"><span class="text-accent-green mt-0.5">&#10003;</span> Basic backtesting</li>
+            <li class="flex items-start gap-2"><span class="text-accent-green mt-0.5">&#10003;</span> Multi-chart layouts</li>
+          </ul>
+        </div>
+
+        <!-- Pro -->
+        <div class="rounded-xl border-2 border-accent-green bg-bg-secondary p-6 relative">
+          <div class="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-accent-green px-3 py-0.5 text-xs font-semibold text-white">Most Popular</div>
+          <h3 class="text-lg font-semibold">Pro</h3>
+          <p class="mt-1 text-sm text-text-secondary">Full AI + scripting power</p>
+          <div class="mt-4">
+            <span class="text-3xl font-bold">~$99</span>
+            <span class="text-text-secondary">/month</span>
+          </div>
+          <ul class="mt-6 space-y-3 text-sm text-text-secondary">
+            <li class="flex items-start gap-2"><span class="text-accent-green mt-0.5">&#10003;</span> Everything in Starter</li>
+            <li class="flex items-start gap-2"><span class="text-accent-green mt-0.5">&#10003;</span> AI Strategy Lab</li>
+            <li class="flex items-start gap-2"><span class="text-accent-green mt-0.5">&#10003;</span> AI Chat Assistant</li>
+            <li class="flex items-start gap-2"><span class="text-accent-green mt-0.5">&#10003;</span> Earnings backtest</li>
+            <li class="flex items-start gap-2"><span class="text-accent-green mt-0.5">&#10003;</span> C# scripting</li>
+            <li class="flex items-start gap-2"><span class="text-accent-green mt-0.5">&#10003;</span> Parameter optimizer</li>
+          </ul>
+        </div>
+
+        <!-- Unlimited -->
+        <div class="rounded-xl border border-border bg-bg-secondary p-6">
+          <h3 class="text-lg font-semibold">Unlimited</h3>
+          <p class="mt-1 text-sm text-text-secondary">Everything + priority support</p>
+          <div class="mt-4">
+            <span class="text-3xl font-bold">~$149</span>
+            <span class="text-text-secondary">/month</span>
+          </div>
+          <ul class="mt-6 space-y-3 text-sm text-text-secondary">
+            <li class="flex items-start gap-2"><span class="text-accent-green mt-0.5">&#10003;</span> Everything in Pro</li>
+            <li class="flex items-start gap-2"><span class="text-accent-green mt-0.5">&#10003;</span> Priority support</li>
+            <li class="flex items-start gap-2"><span class="text-accent-green mt-0.5">&#10003;</span> Early access to new features</li>
+            <li class="flex items-start gap-2"><span class="text-accent-green mt-0.5">&#10003;</span> Strategy scanner</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="border-t border-border bg-bg-secondary py-16 px-6">
+    <div class="mx-auto max-w-2xl">
+      <h2 class="mb-8 text-center text-2xl font-bold">Frequently asked questions</h2>
+      <FAQAccordion items={faqs} />
+    </div>
+  </section>
+
+</BaseLayout>

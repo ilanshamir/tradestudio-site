@@ -1,0 +1,109 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import FeatureCard from '../components/FeatureCard.astro';
+import ComparisonTable from '../components/ComparisonTable.astro';
+import CTASection from '../components/CTASection.astro';
+import ScreenshotPlaceholder from '../components/ScreenshotPlaceholder.astro';
+---
+
+<BaseLayout title="TradeStudio — AI-Powered Trading Analysis Platform">
+
+  <!-- Hero -->
+  <Hero
+    title='AI-Powered Trading Analysis.<br class="hidden md:block" /> <span class="text-accent-green">Desktop Performance.</span>'
+    subtitle="Describe a strategy in plain English. Get compiled, backtested C# code in 30 seconds. TradeStudio is the charting platform where AI isn't a sidebar — it's the engine."
+    primaryCta={{ label: 'Download for Windows', href: '/download' }}
+    secondaryCta={{ label: 'See it in action →', href: '/features' }}
+  />
+
+  <!-- Hero Screenshot -->
+  <section class="-mt-8 mb-16 px-6">
+    <div class="mx-auto max-w-6xl">
+      <div class="rounded-xl border border-border bg-bg-secondary p-2 shadow-2xl shadow-black/50">
+        <ScreenshotPlaceholder label="Full app with chart, indicators, and AI chat panel open" />
+      </div>
+    </div>
+  </section>
+
+  <!-- Three Pillars -->
+  <section class="py-20 px-6">
+    <div class="mx-auto max-w-7xl">
+      <h2 class="text-center text-3xl font-bold md:text-4xl">Three reasons traders switch</h2>
+      <p class="mx-auto mt-4 max-w-2xl text-center text-text-secondary">TradeStudio isn't another charting tool. It's the first platform where AI generates, compiles, and backtests real strategies.</p>
+      <div class="mt-12 grid gap-6 md:grid-cols-3">
+        <FeatureCard
+          title="AI Strategy Lab"
+          description="Describe your trading idea in plain English. Claude generates 3–5 distinct strategies, compiles them via Roslyn, and backtests against real data — ranked by Sortino, Sharpe, or any metric you choose."
+          href="/features/ai-strategy-lab"
+          highlight="purple"
+          icon='<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>'
+        />
+        <FeatureCard
+          title="Earnings Narrative Backtest"
+          description="The only platform that backtests whether AI can predict stock direction from earnings transcripts. See quarter-by-quarter accuracy across years of data. No one else has this."
+          href="/features/earnings-backtest"
+          highlight="purple"
+          icon='<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>'
+        />
+        <FeatureCard
+          title="Professional Charting + 19 Indicators"
+          description="SkiaSharp-rendered candlestick charts with hardware acceleration. Multi-chart layouts, Ichimoku, Bollinger, MACD, RSI — everything a technical trader needs, in a dark theme built for all-day use."
+          href="/features/charting"
+          highlight="green"
+          icon='<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>'
+        />
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section class="border-t border-border bg-bg-secondary py-20 px-6">
+    <div class="mx-auto max-w-5xl">
+      <h2 class="text-center text-3xl font-bold md:text-4xl">From idea to backtest in 30 seconds</h2>
+      <div class="mt-16 grid gap-8 md:grid-cols-3">
+        <div class="text-center">
+          <div class="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-accent-purple/10 text-accent-purple text-xl font-bold">1</div>
+          <h3 class="text-lg font-semibold">Describe</h3>
+          <p class="mt-2 text-sm text-text-secondary">Tell Claude what you want: "momentum strategy avoiding drawdowns over 10%"</p>
+        </div>
+        <div class="text-center">
+          <div class="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-accent-purple/10 text-accent-purple text-xl font-bold">2</div>
+          <h3 class="text-lg font-semibold">Generate</h3>
+          <p class="mt-2 text-sm text-text-secondary">Claude writes 3–5 C# strategies, each with a meaningfully different approach</p>
+        </div>
+        <div class="text-center">
+          <div class="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-accent-purple/10 text-accent-purple text-xl font-bold">3</div>
+          <h3 class="text-lg font-semibold">Backtest</h3>
+          <p class="mt-2 text-sm text-text-secondary">Every strategy is compiled in-process via Roslyn and evaluated against real price data</p>
+        </div>
+      </div>
+      <div class="mt-12">
+        <ScreenshotPlaceholder label="Strategy Lab showing generated strategies with backtest results" />
+      </div>
+    </div>
+  </section>
+
+  <!-- Comparison Teaser -->
+  <section class="py-20 px-6">
+    <div class="mx-auto max-w-6xl">
+      <h2 class="text-center text-3xl font-bold md:text-4xl">How TradeStudio compares</h2>
+      <p class="mx-auto mt-4 max-w-2xl text-center text-text-secondary">We respect the platforms you already use. Here's where TradeStudio fills the gaps.</p>
+      <div class="mt-12 rounded-xl border border-border bg-bg-secondary p-6">
+        <ComparisonTable compact={true} />
+      </div>
+      <div class="mt-6 text-center">
+        <a href="/compare" class="text-sm font-medium text-accent-blue hover:text-text-primary transition-colors">See full comparison &rarr;</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <CTASection
+    title="Ready to test ideas faster than ever?"
+    subtitle="Download TradeStudio and go from trading idea to backtested strategy in under a minute."
+    primaryCta={{ label: 'Download for Windows', href: '/download' }}
+    secondaryCta={{ label: 'Join the waitlist', href: '/pricing' }}
+  />
+
+</BaseLayout>

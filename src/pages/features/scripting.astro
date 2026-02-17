@@ -1,0 +1,95 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ScreenshotPlaceholder from '../../components/ScreenshotPlaceholder.astro';
+import CTASection from '../../components/CTASection.astro';
+---
+
+<BaseLayout title="C# Scripting with Roslyn — TradeStudio" description="Write custom indicators and strategies in C#. Roslyn compiles in-process with hot-reload. Real code, not a black box.">
+
+  <section class="py-20 px-6">
+    <div class="mx-auto max-w-5xl">
+      <div class="mb-4 text-sm font-semibold uppercase tracking-wider text-accent-green">Customization</div>
+      <h1 class="text-4xl font-extrabold md:text-5xl">Real code, not a black box</h1>
+      <p class="mt-4 max-w-2xl text-lg text-text-secondary">Write custom indicators and strategies in C#. Roslyn compiles them in-process — with FileSystemWatcher hot-reload. No build step. No restart.</p>
+    </div>
+  </section>
+
+  <section class="px-6 pb-16">
+    <div class="mx-auto max-w-5xl">
+      <ScreenshotPlaceholder label="Code editor with a custom C# strategy script" />
+    </div>
+  </section>
+
+  <section class="border-t border-border bg-bg-secondary py-16 px-6">
+    <div class="mx-auto max-w-4xl">
+      <h2 class="text-2xl font-bold mb-8">Why C# over Pine Script?</h2>
+      <div class="grid gap-6 md:grid-cols-2">
+        <div class="rounded-xl border border-border bg-bg-primary p-6">
+          <h3 class="font-semibold text-accent-green">C# (TradeStudio)</h3>
+          <ul class="mt-3 space-y-2 text-sm text-text-secondary">
+            <li>Full-featured language with LINQ, generics, async</li>
+            <li>Compiled (not interpreted) — faster execution</li>
+            <li>IntelliSense and IDE support everywhere</li>
+            <li>Same language used in production finance</li>
+            <li>Roslyn compiles in-process, no build chain</li>
+          </ul>
+        </div>
+        <div class="rounded-xl border border-border bg-bg-primary p-6">
+          <h3 class="font-semibold text-text-secondary">Pine Script (TradingView)</h3>
+          <ul class="mt-3 space-y-2 text-sm text-text-secondary">
+            <li>Domain-specific, limited general-purpose use</li>
+            <li>Interpreted — slower for complex strategies</li>
+            <li>Editor only in TradingView web IDE</li>
+            <li>Not transferable to other platforms</li>
+            <li>Constrained by TradingView's execution model</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-16 px-6">
+    <div class="mx-auto max-w-4xl">
+      <h2 class="text-2xl font-bold mb-8">How scripting works</h2>
+      <div class="space-y-6">
+        <div class="flex gap-6">
+          <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-accent-green/10 text-accent-green font-bold">1</div>
+          <div>
+            <h3 class="font-semibold text-lg">Write your script</h3>
+            <p class="mt-1 text-text-secondary">Create a <code class="rounded bg-bg-tertiary px-1.5 py-0.5 font-mono text-sm text-accent-green">.cs</code> file implementing <code class="rounded bg-bg-tertiary px-1.5 py-0.5 font-mono text-sm text-accent-green">IIndicator</code> or <code class="rounded bg-bg-tertiary px-1.5 py-0.5 font-mono text-sm text-accent-green">IStrategy</code>. Use any C# features — LINQ, pattern matching, everything.</p>
+          </div>
+        </div>
+        <div class="flex gap-6">
+          <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-accent-green/10 text-accent-green font-bold">2</div>
+          <div>
+            <h3 class="font-semibold text-lg">Save to the scripts directory</h3>
+            <p class="mt-1 text-text-secondary">FileSystemWatcher detects the change immediately. Roslyn compiles your code in-process. Errors are shown instantly.</p>
+          </div>
+        </div>
+        <div class="flex gap-6">
+          <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-accent-green/10 text-accent-green font-bold">3</div>
+          <div>
+            <h3 class="font-semibold text-lg">Use it immediately</h3>
+            <p class="mt-1 text-text-secondary">Your custom indicator or strategy appears in the registry automatically. Apply it to any chart, backtest it, optimize it — just like the built-in ones.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="border-t border-border bg-bg-secondary py-16 px-6">
+    <div class="mx-auto max-w-4xl">
+      <h2 class="text-2xl font-bold mb-4">Stateless by design</h2>
+      <p class="text-text-secondary leading-relaxed">
+        All indicators implement a pure <code class="rounded bg-bg-tertiary px-1.5 py-0.5 font-mono text-sm text-accent-green">Calculate()</code> function. All strategies implement a pure <code class="rounded bg-bg-tertiary px-1.5 py-0.5 font-mono text-sm text-accent-green">Evaluate()</code> function. No mutable state, no look-ahead bias. The retrospective detection system warns you if your code accidentally accesses future data.
+      </p>
+    </div>
+  </section>
+
+  <CTASection
+    title="Write real code. Get real results."
+    subtitle="C# scripting with Roslyn compilation. No black boxes."
+    primaryCta={{ label: 'Download for Windows', href: '/download' }}
+  />
+
+</BaseLayout>

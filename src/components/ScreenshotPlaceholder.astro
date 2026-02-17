@@ -1,0 +1,12 @@
+---
+interface Props {
+  label: string;
+  aspect?: string;
+}
+
+const { label, aspect = 'aspect-video' } = Astro.props;
+---
+
+<div class={`${aspect} rounded-xl border border-border bg-bg-tertiary flex items-center justify-center`}>
+  <p class="px-4 text-center text-sm text-text-secondary/60">[Screenshot: {label}]</p>
+</div>

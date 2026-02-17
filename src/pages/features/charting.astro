@@ -1,0 +1,85 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ScreenshotPlaceholder from '../../components/ScreenshotPlaceholder.astro';
+import CTASection from '../../components/CTASection.astro';
+---
+
+<BaseLayout title="Professional Charting — TradeStudio" description="Hardware-accelerated SkiaSharp charts with 19 indicators, multi-chart layouts, drawing tools, and a dark theme built for all-day use.">
+
+  <section class="py-20 px-6">
+    <div class="mx-auto max-w-5xl">
+      <div class="mb-4 text-sm font-semibold uppercase tracking-wider text-accent-green">Professional Charting</div>
+      <h1 class="text-4xl font-extrabold md:text-5xl">Charts built for serious traders</h1>
+      <p class="mt-4 max-w-2xl text-lg text-text-secondary">SkiaSharp-rendered candlestick charts with hardware acceleration. Smooth, fast, and dark-themed for all-day use. Desktop performance that web apps can't match.</p>
+    </div>
+  </section>
+
+  <section class="px-6 pb-16">
+    <div class="mx-auto max-w-5xl">
+      <ScreenshotPlaceholder label="Multi-chart layout with indicators and dark theme" />
+    </div>
+  </section>
+
+  <section class="border-t border-border bg-bg-secondary py-16 px-6">
+    <div class="mx-auto max-w-4xl">
+      <h2 class="text-2xl font-bold mb-8">19 built-in indicators</h2>
+      <div class="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4">
+        {[
+          'SMA', 'EMA', 'WMA', 'HMA',
+          'Bollinger Bands', 'Ichimoku Cloud', 'Parabolic SAR', 'SuperTrend',
+          'VWAP', 'RSI', 'MACD', 'Stochastic',
+          'Williams %R', 'CCI', 'ADX', 'OBV',
+          'ATR', 'Fibonacci', 'Trend Lines'
+        ].map(indicator => (
+          <div class="rounded-lg border border-border bg-bg-primary px-3 py-2 text-sm text-text-primary text-center">
+            {indicator}
+          </div>
+        ))}
+      </div>
+      <p class="mt-6 text-sm text-text-secondary">Need something custom? Write your own indicator in C# with <a href="/features/scripting" class="text-accent-blue hover:underline">Roslyn scripting</a>.</p>
+    </div>
+  </section>
+
+  <section class="py-16 px-6">
+    <div class="mx-auto max-w-4xl">
+      <h2 class="text-2xl font-bold mb-8">Multi-chart layouts</h2>
+      <div class="grid gap-6 md:grid-cols-2">
+        <div class="rounded-xl border border-border bg-bg-secondary p-6">
+          <h3 class="font-semibold">6 preset layouts</h3>
+          <p class="mt-2 text-sm text-text-secondary">Single, 2-up horizontal, 2-up vertical, 3-up, quad grid, and tabbed views. Powered by AvalonDock.</p>
+        </div>
+        <div class="rounded-xl border border-border bg-bg-secondary p-6">
+          <h3 class="font-semibold">Snap-to-zone positioning</h3>
+          <p class="mt-2 text-sm text-text-secondary">Drag charts to snap into predefined zones. Rearrange your layout without fiddling with pixel-perfect positioning.</p>
+        </div>
+        <div class="rounded-xl border border-border bg-bg-secondary p-6">
+          <h3 class="font-semibold">Workspace persistence</h3>
+          <p class="mt-2 text-sm text-text-secondary">Your entire layout — charts, indicators, strategies, and settings — saves to JSON and restores exactly as you left it.</p>
+        </div>
+        <div class="rounded-xl border border-border bg-bg-secondary p-6">
+          <h3 class="font-semibold">Drawing tools</h3>
+          <p class="mt-2 text-sm text-text-secondary">Horizontal lines, trend lines, and Fibonacci retracements. Click and draw directly on the chart.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="border-t border-border bg-bg-secondary py-16 px-6">
+    <div class="mx-auto max-w-4xl">
+      <h2 class="text-2xl font-bold mb-4">Why desktop?</h2>
+      <p class="text-text-secondary leading-relaxed">
+        Web-based charting tools hit a performance ceiling. Browser sandboxing, JavaScript GC pauses, and network latency all add up. TradeStudio renders charts natively via SkiaSharp with hardware acceleration. Panning, zooming, and crosshair tracking are instant — even with thousands of bars and multiple overlays.
+      </p>
+      <p class="mt-4 text-text-secondary leading-relaxed">
+        This isn't legacy thinking. It's a deliberate architectural choice for traders who need responsive, all-day charting.
+      </p>
+    </div>
+  </section>
+
+  <CTASection
+    title="See the difference desktop makes"
+    subtitle="Fast, smooth charts that don't lag. Dark theme that doesn't fatigue."
+    primaryCta={{ label: 'Download for Windows', href: '/download' }}
+  />
+
+</BaseLayout>

@@ -1,0 +1,92 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Download TradeStudio for Windows" description="Download TradeStudio for Windows x64 and ARM64. AI-powered trading analysis with desktop performance.">
+
+  <section class="py-20 px-6">
+    <div class="mx-auto max-w-3xl text-center">
+      <h1 class="text-4xl font-extrabold md:text-5xl">Download TradeStudio</h1>
+      <p class="mx-auto mt-4 max-w-xl text-lg text-text-secondary">Get started in minutes. Native Windows app with desktop performance.</p>
+
+      <div class="mt-12 rounded-xl border border-border bg-bg-secondary p-8">
+        <div class="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-accent-green/10">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" class="text-accent-green">
+            <path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801" fill="currentColor"/>
+          </svg>
+        </div>
+        <h2 class="text-2xl font-bold">Windows</h2>
+        <p class="mt-2 text-sm text-text-secondary">x64 and ARM64 supported</p>
+
+        <div class="mt-6 flex flex-col gap-3 sm:flex-row sm:justify-center">
+          <a href="#" class="rounded-lg bg-accent-green px-8 py-3.5 text-base font-semibold text-white shadow-lg shadow-accent-green/20 hover:bg-accent-green-hover transition-all">
+            Download for Windows
+          </a>
+        </div>
+        <p class="mt-4 text-xs text-text-secondary/60">Version 1.0 &middot; Requires .NET 10 Runtime</p>
+      </div>
+
+      <!-- System Requirements -->
+      <div class="mt-12 rounded-xl border border-border bg-bg-secondary p-8 text-left">
+        <h3 class="text-lg font-semibold mb-4">System requirements</h3>
+        <div class="grid gap-4 sm:grid-cols-2">
+          <div>
+            <h4 class="text-sm font-medium text-text-secondary">Operating System</h4>
+            <p class="text-sm">Windows 10 or later</p>
+          </div>
+          <div>
+            <h4 class="text-sm font-medium text-text-secondary">Architecture</h4>
+            <p class="text-sm">x64 or ARM64</p>
+          </div>
+          <div>
+            <h4 class="text-sm font-medium text-text-secondary">Runtime</h4>
+            <p class="text-sm">.NET 10 Runtime</p>
+          </div>
+          <div>
+            <h4 class="text-sm font-medium text-text-secondary">Display</h4>
+            <p class="text-sm">1280x720 minimum (1920x1080+ recommended)</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Start -->
+      <div class="mt-12 rounded-xl border border-border bg-bg-secondary p-8 text-left">
+        <h3 class="text-lg font-semibold mb-6">Quick start</h3>
+        <ol class="space-y-4">
+          <li class="flex gap-4">
+            <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-accent-green/10 text-sm font-bold text-accent-green">1</span>
+            <div>
+              <p class="font-medium">Install TradeStudio</p>
+              <p class="text-sm text-text-secondary">Download and run the installer. No admin rights required.</p>
+            </div>
+          </li>
+          <li class="flex gap-4">
+            <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-accent-green/10 text-sm font-bold text-accent-green">2</span>
+            <div>
+              <p class="font-medium">Enter your API keys</p>
+              <p class="text-sm text-text-secondary">Open Settings and add your Anthropic API key (for AI features) and any data provider keys.</p>
+            </div>
+          </li>
+          <li class="flex gap-4">
+            <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-accent-green/10 text-sm font-bold text-accent-green">3</span>
+            <div>
+              <p class="font-medium">Load a chart</p>
+              <p class="text-sm text-text-secondary">Type a ticker symbol and hit enter. Yahoo Finance data is free — no API key needed.</p>
+            </div>
+          </li>
+          <li class="flex gap-4">
+            <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-accent-green/10 text-sm font-bold text-accent-green">4</span>
+            <div>
+              <p class="font-medium">Try the Strategy Lab</p>
+              <p class="text-sm text-text-secondary">Open the Strategy Lab tab and describe a trading idea in plain English.</p>
+            </div>
+          </li>
+        </ol>
+        <p class="mt-6 text-sm text-text-secondary">
+          Need more help? See the <a href="/docs" class="text-accent-blue hover:underline">full documentation</a>.
+        </p>
+      </div>
+    </div>
+  </section>
+
+</BaseLayout>

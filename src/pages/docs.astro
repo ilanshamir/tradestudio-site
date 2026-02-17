@@ -1,0 +1,179 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const indicatorCode = `public class MyIndicator : IIndicator
+{
+    public string Name =&gt; "My Custom SMA";
+
+    public IndicatorResult Calculate(IReadOnlyList&lt;Bar&gt; bars,
+        Dictionary&lt;string, object&gt; parameters)
+    {
+        int period = (int)parameters["Period"];
+        var values = new double[bars.Count];
+
+        for (int i = period - 1; i &lt; bars.Count; i++)
+        {
+            double sum = 0;
+            for (int j = 0; j &lt; period; j++)
+                sum += bars[i - j].Close;
+            values[i] = sum / period;
+        }
+
+        return new IndicatorResult("MySMA", values);
+    }
+}`;
+
+const strategyCode = `public class MyStrategy : IStrategy
+{
+    public string Name =&gt; "Golden Cross";
+
+    public StrategyResult Evaluate(IReadOnlyList&lt;Bar&gt; bars,
+        Dictionary&lt;string, object&gt; parameters)
+    {
+        // Your strategy logic here
+        // Return buy/sell signals
+    }
+}`;
+---
+
+<BaseLayout title="Documentation — TradeStudio" description="Get started with TradeStudio. Installation, API key setup, charting, AI Strategy Lab, and scripting guides.">
+
+  <section class="py-20 px-6">
+    <div class="mx-auto max-w-3xl">
+      <h1 class="text-4xl font-extrabold md:text-5xl">Getting started</h1>
+      <p class="mt-4 text-lg text-text-secondary">Everything you need to go from install to your first AI-generated strategy.</p>
+
+      <!-- Table of Contents -->
+      <nav class="mt-8 rounded-xl border border-border bg-bg-secondary p-6">
+        <h2 class="mb-4 text-sm font-semibold uppercase tracking-wider text-text-secondary">On this page</h2>
+        <ol class="space-y-2 text-sm">
+          <li><a href="#installation" class="text-accent-blue hover:text-text-primary transition-colors">1. Installation</a></li>
+          <li><a href="#api-keys" class="text-accent-blue hover:text-text-primary transition-colors">2. Setting up API keys</a></li>
+          <li><a href="#first-chart" class="text-accent-blue hover:text-text-primary transition-colors">3. Loading your first chart</a></li>
+          <li><a href="#strategy-lab" class="text-accent-blue hover:text-text-primary transition-colors">4. Using the AI Strategy Lab</a></li>
+          <li><a href="#scripting" class="text-accent-blue hover:text-text-primary transition-colors">5. Writing a custom script</a></li>
+          <li><a href="#ui-guide" class="text-accent-blue hover:text-text-primary transition-colors">6. UI guide & keyboard shortcuts</a></li>
+        </ol>
+      </nav>
+
+      <!-- Section 1: Installation -->
+      <section id="installation" class="mt-16">
+        <h2 class="text-2xl font-bold">1. Installation</h2>
+        <div class="mt-4 space-y-4 text-text-secondary">
+          <p>TradeStudio runs on Windows 10 or later, on both x64 and ARM64 processors.</p>
+          <ol class="list-decimal list-inside space-y-2 pl-4">
+            <li>Download the latest release from the <a href="/download" class="text-accent-blue hover:underline">download page</a></li>
+            <li>Install the <a href="https://dotnet.microsoft.com/download/dotnet/10.0" class="text-accent-blue hover:underline" target="_blank" rel="noopener">.NET 10 Runtime</a> if you don't already have it</li>
+            <li>Run the installer — no admin rights required</li>
+            <li>Launch TradeStudio from your Start menu or desktop shortcut</li>
+          </ol>
+        </div>
+      </section>
+
+      <!-- Section 2: API Keys -->
+      <section id="api-keys" class="mt-16">
+        <h2 class="text-2xl font-bold">2. Setting up API keys</h2>
+        <div class="mt-4 space-y-4 text-text-secondary">
+          <p>TradeStudio uses a "bring your own key" model. You pay providers directly — no markup.</p>
+
+          <div class="rounded-lg border border-border bg-bg-secondary p-4">
+            <h4 class="font-semibold text-text-primary">Anthropic (required for AI features)</h4>
+            <p class="mt-1 text-sm">Get an API key at <a href="https://console.anthropic.com" class="text-accent-blue hover:underline" target="_blank" rel="noopener">console.anthropic.com</a>. Used for Strategy Lab, AI Chat, and earnings/narrative backtests.</p>
+          </div>
+
+          <div class="rounded-lg border border-border bg-bg-secondary p-4">
+            <h4 class="font-semibold text-text-primary">Yahoo Finance (default, free)</h4>
+            <p class="mt-1 text-sm">No key needed. Daily OHLCV data for US equities, ETFs, and indices. Built in.</p>
+          </div>
+
+          <div class="rounded-lg border border-border bg-bg-secondary p-4">
+            <h4 class="font-semibold text-text-primary">Polygon.io (optional, premium data)</h4>
+            <p class="mt-1 text-sm">Real-time and historical data. Sign up at <a href="https://polygon.io" class="text-accent-blue hover:underline" target="_blank" rel="noopener">polygon.io</a>.</p>
+          </div>
+
+          <div class="rounded-lg border border-border bg-bg-secondary p-4">
+            <h4 class="font-semibold text-text-primary">Financial Modeling Prep (optional, earnings data)</h4>
+            <p class="mt-1 text-sm">Required for earnings narrative backtest. Sign up at <a href="https://financialmodelingprep.com" class="text-accent-blue hover:underline" target="_blank" rel="noopener">financialmodelingprep.com</a>.</p>
+          </div>
+
+          <p>Open <strong>Settings</strong> in TradeStudio and paste your keys into the appropriate fields.</p>
+        </div>
+      </section>
+
+      <!-- Section 3: First Chart -->
+      <section id="first-chart" class="mt-16">
+        <h2 class="text-2xl font-bold">3. Loading your first chart</h2>
+        <div class="mt-4 space-y-4 text-text-secondary">
+          <ol class="list-decimal list-inside space-y-2 pl-4">
+            <li>Type a ticker symbol in the symbol bar (e.g., <code class="rounded bg-bg-tertiary px-1.5 py-0.5 font-mono text-sm text-accent-green">SPY</code>, <code class="rounded bg-bg-tertiary px-1.5 py-0.5 font-mono text-sm text-accent-green">AAPL</code>)</li>
+            <li>Press Enter — data loads from Yahoo Finance by default</li>
+            <li>Right-click the chart to add indicators</li>
+            <li>Use mouse wheel to zoom, click-drag to pan</li>
+            <li>Hover to see the crosshair with price/date values</li>
+          </ol>
+          <p>Use the layout buttons in the toolbar to create multi-chart views (2-up, quad, etc.).</p>
+        </div>
+      </section>
+
+      <!-- Section 4: Strategy Lab -->
+      <section id="strategy-lab" class="mt-16">
+        <h2 class="text-2xl font-bold">4. Using the AI Strategy Lab</h2>
+        <div class="mt-4 space-y-4 text-text-secondary">
+          <ol class="list-decimal list-inside space-y-2 pl-4">
+            <li>Open the <strong>Strategy Lab</strong> tab</li>
+            <li>Describe your strategy in the prompt box — e.g., "momentum strategy that avoids drawdowns over 10%"</li>
+            <li>Claude generates 3–5 distinct C# strategies</li>
+            <li>Each strategy is compiled via Roslyn and backtested automatically</li>
+            <li>Results are ranked by your chosen fitness metric (Sharpe, Sortino, etc.)</li>
+            <li>Click any strategy to see its code, trade log, and detailed metrics</li>
+          </ol>
+          <p>You can refine strategies conversationally — ask Claude to adjust parameters, add filters, or try different approaches.</p>
+          <p>Use the <strong>Parameter Optimizer</strong> to grid-search across parameter ranges for any generated strategy.</p>
+        </div>
+      </section>
+
+      <!-- Section 5: Scripting -->
+      <section id="scripting" class="mt-16">
+        <h2 class="text-2xl font-bold">5. Writing a custom script</h2>
+        <div class="mt-4 space-y-4 text-text-secondary">
+          <p>TradeStudio supports custom indicators and strategies written in C#. Scripts are compiled in-process by Roslyn.</p>
+
+          <h4 class="font-semibold text-text-primary">Custom Indicator</h4>
+          <pre class="rounded-lg border border-border bg-bg-tertiary p-4 overflow-x-auto text-sm font-mono"><code class="text-text-primary" set:html={indicatorCode} /></pre>
+
+          <h4 class="font-semibold text-text-primary">Custom Strategy</h4>
+          <pre class="rounded-lg border border-border bg-bg-tertiary p-4 overflow-x-auto text-sm font-mono"><code class="text-text-primary" set:html={strategyCode} /></pre>
+
+          <p>Save your scripts to the scripts directory. <strong>FileSystemWatcher</strong> hot-reloads them automatically — no restart needed.</p>
+        </div>
+      </section>
+
+      <!-- Section 6: UI Guide -->
+      <section id="ui-guide" class="mt-16 mb-16">
+        <h2 class="text-2xl font-bold">6. UI guide & keyboard shortcuts</h2>
+        <div class="mt-4 space-y-4 text-text-secondary">
+          <div class="rounded-lg border border-border bg-bg-secondary overflow-hidden">
+            <table class="w-full text-sm">
+              <thead>
+                <tr class="border-b border-border">
+                  <th class="px-4 py-3 text-left font-medium text-text-primary">Shortcut</th>
+                  <th class="px-4 py-3 text-left font-medium text-text-primary">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="border-b border-border/50"><td class="px-4 py-2 font-mono text-accent-green">Ctrl+N</td><td class="px-4 py-2">New chart</td></tr>
+                <tr class="border-b border-border/50"><td class="px-4 py-2 font-mono text-accent-green">Ctrl+S</td><td class="px-4 py-2">Save workspace</td></tr>
+                <tr class="border-b border-border/50"><td class="px-4 py-2 font-mono text-accent-green">Ctrl+O</td><td class="px-4 py-2">Open workspace</td></tr>
+                <tr class="border-b border-border/50"><td class="px-4 py-2 font-mono text-accent-green">Scroll</td><td class="px-4 py-2">Zoom in/out</td></tr>
+                <tr class="border-b border-border/50"><td class="px-4 py-2 font-mono text-accent-green">Click+Drag</td><td class="px-4 py-2">Pan chart</td></tr>
+                <tr><td class="px-4 py-2 font-mono text-accent-green">Right-click</td><td class="px-4 py-2">Context menu (add indicators, etc.)</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </section>
+
+</BaseLayout>

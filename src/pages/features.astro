@@ -1,0 +1,157 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import FeatureCard from '../components/FeatureCard.astro';
+import CTASection from '../components/CTASection.astro';
+---
+
+<BaseLayout title="Features — TradeStudio" description="Explore TradeStudio's AI-powered strategy generation, professional charting, backtesting, and C# scripting capabilities.">
+
+  <section class="py-20 px-6">
+    <div class="mx-auto max-w-5xl text-center">
+      <h1 class="text-4xl font-extrabold md:text-5xl">Everything you need to research smarter</h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-text-secondary">AI-powered analysis, professional charting, and real code generation — in a single desktop application.</p>
+    </div>
+  </section>
+
+  <!-- AI-Powered Analysis -->
+  <section class="border-t border-border bg-bg-secondary py-16 px-6">
+    <div class="mx-auto max-w-7xl">
+      <h2 class="mb-2 text-sm font-semibold uppercase tracking-wider text-accent-purple">AI-Powered Analysis</h2>
+      <h3 class="mb-8 text-2xl font-bold">AI isn't a sidebar. It's the engine.</h3>
+      <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <FeatureCard
+          title="AI Strategy Lab"
+          description="Describe a strategy in plain English. Claude generates 3–5 distinct C# strategies, compiles them via Roslyn, and backtests each one — ranked by any fitness metric you choose."
+          href="/features/ai-strategy-lab"
+          highlight="purple"
+          icon='<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>'
+        />
+        <FeatureCard
+          title="AI Chat Assistant"
+          description="Built-in Claude chat with /narrative and /market commands. Get AI analysis of any stock's story or broad market conditions, directly inside the app."
+          highlight="purple"
+          icon='<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>'
+        />
+        <FeatureCard
+          title="Earnings Narrative Backtest"
+          description="The only platform that backtests AI earnings predictions. Feed real transcripts to Claude, get direction/magnitude/confidence predictions, and see quarter-by-quarter accuracy."
+          href="/features/earnings-backtest"
+          highlight="purple"
+          icon='<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>'
+        />
+        <FeatureCard
+          title="Narrative Strategy Backtest"
+          description="Monthly OHLCV-only prediction using AI. Works with any symbol. Cached predictions with incremental updates so you only pay for new data."
+          href="/features/narrative-backtest"
+          highlight="purple"
+          icon='<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>'
+        />
+        <FeatureCard
+          title="AI Code Generation"
+          description="Claude writes production-quality C# code for indicators and strategies. Roslyn compiles it in-process — real code, not a black box. You can read and modify every line."
+          highlight="purple"
+          icon='<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>'
+        />
+      </div>
+    </div>
+  </section>
+
+  <!-- Professional Charting -->
+  <section class="py-16 px-6">
+    <div class="mx-auto max-w-7xl">
+      <h2 class="mb-2 text-sm font-semibold uppercase tracking-wider text-accent-green">Professional Charting</h2>
+      <h3 class="mb-8 text-2xl font-bold">Desktop performance for serious traders</h3>
+      <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <FeatureCard
+          title="SkiaSharp Candlestick Charts"
+          description="Hardware-accelerated rendering via SkiaSharp. Smooth panning, zooming, and crosshair tracking — even with thousands of bars."
+          href="/features/charting"
+          highlight="green"
+          icon='<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>'
+        />
+        <FeatureCard
+          title="Multi-Chart Layouts"
+          description="6 preset layouts via AvalonDock — tabbed, 2-up, 3-up, quad grid, and more. Snap-to-zone positioning. Workspaces save and restore your entire layout."
+          highlight="green"
+          icon='<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>'
+        />
+        <FeatureCard
+          title="19 Built-in Indicators"
+          description="SMA, EMA, WMA, HMA, Bollinger Bands, Ichimoku, PSAR, SuperTrend, VWAP, RSI, MACD, Stochastic, Williams %R, CCI, ADX, OBV, ATR — and more via scripting."
+          highlight="green"
+          icon='<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>'
+        />
+      </div>
+    </div>
+  </section>
+
+  <!-- Backtesting & Research -->
+  <section class="border-t border-border bg-bg-secondary py-16 px-6">
+    <div class="mx-auto max-w-7xl">
+      <h2 class="mb-2 text-sm font-semibold uppercase tracking-wider text-accent-blue">Backtesting & Research</h2>
+      <h3 class="mb-8 text-2xl font-bold">Rigorous analysis, not guesswork</h3>
+      <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <FeatureCard
+          title="Full Backtest Metrics"
+          description="Total Return, Win Rate, Max Drawdown, Profit Factor, Sharpe Ratio, Sortino Ratio — all computed per strategy, per symbol."
+          highlight="blue"
+          icon='<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>'
+        />
+        <FeatureCard
+          title="Parameter Optimizer"
+          description="Grid search across parameter ranges. Find the best configuration for any strategy — with full results ranked by your chosen fitness metric."
+          highlight="blue"
+          icon='<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>'
+        />
+        <FeatureCard
+          title="Strategy Scanner"
+          description="Screen entire watchlists against any strategy. Find which symbols match your criteria — in seconds, not hours."
+          highlight="blue"
+          icon='<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3h7v7H3zM14 3h7v7h-7zM14 14h7v7h-7zM3 14h7v7H3z"/></svg>'
+        />
+        <FeatureCard
+          title="Trade Log with Click-to-Navigate"
+          description="Every backtest generates a trade log. Click any trade to jump to that exact bar on the chart. See entries, exits, and P&L at a glance."
+          highlight="blue"
+          icon='<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>'
+        />
+      </div>
+    </div>
+  </section>
+
+  <!-- Customization -->
+  <section class="py-16 px-6">
+    <div class="mx-auto max-w-7xl">
+      <h2 class="mb-2 text-sm font-semibold uppercase tracking-wider text-accent-green">Customization</h2>
+      <h3 class="mb-8 text-2xl font-bold">Real code, not a black box</h3>
+      <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <FeatureCard
+          title="C# Roslyn Scripting"
+          description="Write custom indicators and strategies in C#. Roslyn compiles them in-process — full IDE-quality code with no build step."
+          href="/features/scripting"
+          highlight="green"
+          icon='<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>'
+        />
+        <FeatureCard
+          title="Hot-Reload Scripts"
+          description="FileSystemWatcher monitors your script directory. Save a file and it's immediately compiled and available — no restart needed."
+          highlight="green"
+          icon='<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg>'
+        />
+        <FeatureCard
+          title="Workspace Persistence"
+          description="Workspaces serialize to JSON. Your chart layouts, indicators, strategies, and settings persist across launches. Pick up exactly where you left off."
+          highlight="green"
+          icon='<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>'
+        />
+      </div>
+    </div>
+  </section>
+
+  <CTASection
+    title="See it in action"
+    subtitle="Download TradeStudio and start testing strategies in minutes."
+    primaryCta={{ label: 'Download for Windows', href: '/download' }}
+  />
+
+</BaseLayout>

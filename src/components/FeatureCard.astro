@@ -1,0 +1,38 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  icon?: string;
+  href?: string;
+  highlight?: 'green' | 'purple' | 'blue';
+}
+
+const { title, description, icon, href, highlight = 'green' } = Astro.props;
+
+const highlightColors = {
+  green: 'group-hover:border-accent-green/40',
+  purple: 'group-hover:border-accent-purple/40',
+  blue: 'group-hover:border-accent-blue/40',
+};
+
+const iconColors = {
+  green: 'text-accent-green',
+  purple: 'text-accent-purple',
+  blue: 'text-accent-blue',
+};
+---
+
+<div class={`group rounded-xl border border-border bg-bg-secondary p-6 transition-all hover:bg-bg-tertiary ${highlightColors[highlight]}`}>
+  {icon && (
+    <div class={`mb-4 text-2xl ${iconColors[highlight]}`}>
+      <Fragment set:html={icon} />
+    </div>
+  )}
+  <h3 class="mb-2 text-lg font-semibold text-text-primary">{title}</h3>
+  <p class="text-sm text-text-secondary leading-relaxed">{description}</p>
+  {href && (
+    <a href={href} class={`mt-4 inline-block text-sm font-medium text-accent-blue hover:text-text-primary transition-colors`}>
+      Learn more &rarr;
+    </a>
+  )}
+</div>

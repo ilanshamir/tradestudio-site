@@ -1,0 +1,78 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ScreenshotPlaceholder from '../../components/ScreenshotPlaceholder.astro';
+import CTASection from '../../components/CTASection.astro';
+---
+
+<BaseLayout title="AI Earnings Narrative Backtest — TradeStudio" description="The only platform that backtests AI earnings predictions. Feed real transcripts to Claude and see quarter-by-quarter prediction accuracy.">
+
+  <section class="py-20 px-6">
+    <div class="mx-auto max-w-5xl">
+      <div class="mb-4 text-sm font-semibold uppercase tracking-wider text-accent-purple">Unique to TradeStudio</div>
+      <h1 class="text-4xl font-extrabold md:text-5xl">Earnings Narrative Backtest</h1>
+      <p class="mt-4 max-w-2xl text-lg text-text-secondary">Can AI predict stock direction from earnings transcripts? Now you can test it. Feed real transcripts to Claude and see quarter-by-quarter prediction accuracy across years of data.</p>
+      <p class="mt-4 text-accent-purple font-semibold">No competitor offers this. Zero.</p>
+    </div>
+  </section>
+
+  <section class="px-6 pb-16">
+    <div class="mx-auto max-w-5xl">
+      <ScreenshotPlaceholder label="Earnings backtest results streaming in with quarter-by-quarter accuracy" />
+    </div>
+  </section>
+
+  <section class="border-t border-border bg-bg-secondary py-16 px-6">
+    <div class="mx-auto max-w-4xl">
+      <h2 class="text-2xl font-bold mb-8">How it works</h2>
+      <div class="space-y-8">
+        <div class="flex gap-6">
+          <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-accent-purple/10 text-accent-purple font-bold">1</div>
+          <div>
+            <h3 class="font-semibold text-lg">Fetch real earnings transcripts</h3>
+            <p class="mt-1 text-text-secondary">TradeStudio pulls actual earnings call transcripts from Financial Modeling Prep (FMP). Real data, not summaries.</p>
+          </div>
+        </div>
+        <div class="flex gap-6">
+          <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-accent-purple/10 text-accent-purple font-bold">2</div>
+          <div>
+            <h3 class="font-semibold text-lg">Claude makes predictions</h3>
+            <p class="mt-1 text-text-secondary">For each quarter, Claude reads the transcript and predicts: direction (up/down), magnitude (percentage range), and confidence level. The AI only sees data available at the time — no future information.</p>
+          </div>
+        </div>
+        <div class="flex gap-6">
+          <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-accent-purple/10 text-accent-purple font-bold">3</div>
+          <div>
+            <h3 class="font-semibold text-lg">Compare against actual results</h3>
+            <p class="mt-1 text-text-secondary">See exactly how accurate the AI was. Quarter-by-quarter accuracy, with prediction details and actual price movements side by side.</p>
+          </div>
+        </div>
+        <div class="flex gap-6">
+          <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-accent-purple/10 text-accent-purple font-bold">4</div>
+          <div>
+            <h3 class="font-semibold text-lg">Cache and reuse</h3>
+            <p class="mt-1 text-text-secondary">Predictions are cached locally. A full backtest of SPY from 1990 costs roughly $20 in API calls the first time — then it's free forever. New quarters are added incrementally.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-16 px-6">
+    <div class="mx-auto max-w-4xl">
+      <h2 class="text-2xl font-bold mb-4">Why this matters</h2>
+      <p class="text-text-secondary leading-relaxed">
+        Every trading platform claims AI will revolutionize analysis. But none of them let you <em>test</em> whether AI predictions are actually accurate. TradeStudio does. You can see, quarter by quarter, whether Claude's earnings analysis would have helped or hurt your trading decisions. That's not marketing — it's verifiable research.
+      </p>
+      <p class="mt-4 text-xs text-text-secondary/60">
+        Past performance does not guarantee future results. This feature is a research tool for evaluating AI prediction accuracy, not investment advice.
+      </p>
+    </div>
+  </section>
+
+  <CTASection
+    title="Test AI earnings predictions"
+    subtitle="See if AI can predict stock direction from earnings. No one else lets you do this."
+    primaryCta={{ label: 'Download for Windows', href: '/download' }}
+  />
+
+</BaseLayout>
