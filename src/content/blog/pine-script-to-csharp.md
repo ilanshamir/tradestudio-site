@@ -32,9 +32,9 @@ Roslyn compiles your C# to IL code that runs on the .NET runtime. That's fundame
 
 ### AI generation
 
-Here's where it gets interesting. Claude can generate C# strategies from natural language. The Strategy Lab produces real, readable, modifiable C# code — not a black box.
+Here's where it gets interesting. The AI can generate C# strategies from natural language. The Strategy Lab produces real, readable, modifiable C# code — not a black box.
 
-You could ask Claude to write Pine Script too. But Pine Script strategies can't be compiled and backtested locally. They have to run inside TradingView. C# strategies compile and run in-process, in milliseconds.
+You could ask AI to write Pine Script too. But Pine Script strategies can't be compiled and backtested locally. They have to run inside TradingView. C# strategies compile and run in-process, in milliseconds.
 
 ### Portable knowledge
 
@@ -104,6 +104,6 @@ You don't have to rewrite everything on day one. Here's a practical approach:
 
 ## Try it
 
-[Download TradeStudio](/download) and open the Strategy Lab. Describe a strategy you've written in Pine Script. See what Claude generates in C#. Compare the two.
+[Download TradeStudio](/download) and open the Strategy Lab. Describe a strategy you've written in Pine Script. See what the AI generates in C#. Compare the two.
 
 You might be surprised how readable the C# version is — especially when you didn't have to write it from scratch.

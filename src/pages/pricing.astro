@@ -5,11 +5,11 @@ import FAQAccordion from '../components/FAQAccordion.astro';
 const faqs = [
   {
     question: 'Do I need my own API keys?',
-    answer: 'Yes. For AI features, you provide your own Anthropic API key. For market data, Yahoo Finance is free. Premium data providers (Polygon, FMP, AlphaVantage) require their own API keys. This keeps costs transparent — you pay directly for what you use.'
+    answer: 'Yes. For AI features, you provide your own AI API key. For market data, Yahoo Finance is free. Premium data providers (Polygon, FMP, AlphaVantage) require their own API keys. This keeps costs transparent — you pay directly for what you use.'
   },
   {
     question: 'What platforms are supported?',
-    answer: 'Windows only — both x64 and ARM64. TradeStudio is a native WPF desktop application built on .NET 10. We chose desktop deliberately for performance-critical charting and real-time data rendering.'
+    answer: 'Windows, macOS, and Linux — x64 and ARM64. TradeStudio is a native desktop application built on .NET 10. We chose desktop deliberately for performance-critical charting and real-time data rendering.'
   },
   {
     question: 'Is this a brokerage?',
@@ -17,7 +17,7 @@ const faqs = [
   },
   {
     question: 'How much does the AI cost to use?',
-    answer: 'AI costs depend on your Anthropic API usage. A typical Strategy Lab session (generating and backtesting 3–5 strategies) costs a few cents. An earnings backtest of SPY from 1990 costs roughly $20 the first run, then free forever — predictions are cached locally.'
+    answer: 'AI costs depend on your AI API usage. A typical Strategy Lab session (generating and backtesting 3–5 strategies) costs a few cents. An earnings backtest of SPY from 1990 costs roughly $20 the first run, then free forever — predictions are cached locally.'
   },
   {
     question: 'Is there a free trial?',
@@ -59,7 +59,7 @@ const faqs = [
             Join waitlist
           </button>
         </form>
-        <p class="mt-4 text-xs text-text-secondary/60">Bring your own API keys (Anthropic, data providers). No credit card required.</p>
+        <p class="mt-4 text-xs text-text-secondary/60">Bring your own API keys (AI provider, data providers). No credit card required.</p>
       </div>
     </div>
   </section>
@@ -80,7 +80,7 @@ const faqs = [
           </div>
           <ul class="mt-6 space-y-3 text-sm text-text-secondary">
             <li class="flex items-start gap-2"><span class="text-accent-green mt-0.5">&#10003;</span> Professional charting</li>
-            <li class="flex items-start gap-2"><span class="text-accent-green mt-0.5">&#10003;</span> 19 built-in indicators</li>
+            <li class="flex items-start gap-2"><span class="text-accent-green mt-0.5">&#10003;</span> 20+ built-in indicators</li>
             <li class="flex items-start gap-2"><span class="text-accent-green mt-0.5">&#10003;</span> Built-in strategies</li>
             <li class="flex items-start gap-2"><span class="text-accent-green mt-0.5">&#10003;</span> Basic backtesting</li>
             <li class="flex items-start gap-2"><span class="text-accent-green mt-0.5">&#10003;</span> Multi-chart layouts</li>

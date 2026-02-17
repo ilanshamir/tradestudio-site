@@ -60,7 +60,7 @@ const strategyCode = `public class MyStrategy : IStrategy
       <section id="installation" class="mt-16">
         <h2 class="text-2xl font-bold">1. Installation</h2>
         <div class="mt-4 space-y-4 text-text-secondary">
-          <p>TradeStudio runs on Windows 10 or later, on both x64 and ARM64 processors.</p>
+          <p>TradeStudio runs on Windows 10+, macOS 12+, and Linux (Ubuntu 20.04+, Fedora 38+), on both x64 and ARM64 processors.</p>
           <ol class="list-decimal list-inside space-y-2 pl-4">
             <li>Download the latest release from the <a href="/download" class="text-accent-blue hover:underline">download page</a></li>
             <li>Install the <a href="https://dotnet.microsoft.com/download/dotnet/10.0" class="text-accent-blue hover:underline" target="_blank" rel="noopener">.NET 10 Runtime</a> if you don't already have it</li>
@@ -77,8 +77,8 @@ const strategyCode = `public class MyStrategy : IStrategy
           <p>TradeStudio uses a "bring your own key" model. You pay providers directly — no markup.</p>
 
           <div class="rounded-lg border border-border bg-bg-secondary p-4">
-            <h4 class="font-semibold text-text-primary">Anthropic (required for AI features)</h4>
-            <p class="mt-1 text-sm">Get an API key at <a href="https://console.anthropic.com" class="text-accent-blue hover:underline" target="_blank" rel="noopener">console.anthropic.com</a>. Used for Strategy Lab, AI Chat, and earnings/narrative backtests.</p>
+            <h4 class="font-semibold text-text-primary">AI Provider (required for AI features)</h4>
+            <p class="mt-1 text-sm">An AI API key is required for Strategy Lab, AI Chat, and earnings/narrative backtests. See Settings for supported providers.</p>
           </div>
 
           <div class="rounded-lg border border-border bg-bg-secondary p-4">
@@ -122,12 +122,12 @@ const strategyCode = `public class MyStrategy : IStrategy
           <ol class="list-decimal list-inside space-y-2 pl-4">
             <li>Open the <strong>Strategy Lab</strong> tab</li>
             <li>Describe your strategy in the prompt box — e.g., "momentum strategy that avoids drawdowns over 10%"</li>
-            <li>Claude generates 3–5 distinct C# strategies</li>
+            <li>TradeStudio AI generates 3–5 distinct C# strategies</li>
             <li>Each strategy is compiled via Roslyn and backtested automatically</li>
             <li>Results are ranked by your chosen fitness metric (Sharpe, Sortino, etc.)</li>
             <li>Click any strategy to see its code, trade log, and detailed metrics</li>
           </ol>
-          <p>You can refine strategies conversationally — ask Claude to adjust parameters, add filters, or try different approaches.</p>
+          <p>You can refine strategies conversationally — ask the AI to adjust parameters, add filters, or try different approaches.</p>
           <p>Use the <strong>Parameter Optimizer</strong> to grid-search across parameter ranges for any generated strategy.</p>
         </div>
       </section>

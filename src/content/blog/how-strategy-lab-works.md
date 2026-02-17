@@ -1,5 +1,5 @@
 ---
-title: "How TradeStudio Uses Claude to Generate Trading Strategies"
+title: "How TradeStudio Uses AI to Generate Trading Strategies"
 description: "A deep dive into the Strategy Lab workflow: natural language prompts, C# code generation, Roslyn compilation, and automated backtesting."
 date: 2026-02-14
 tags: ["ai", "strategy-lab", "technical"]
@@ -18,17 +18,17 @@ Neither approach gives you what you actually need: verifiable, modifiable code t
 
 The Strategy Lab bridges the gap between natural language and compiled code. Here's what happens when you type a prompt:
 
-### Step 1: Your prompt goes to Claude
+### Step 1: Your prompt goes to the AI
 
-When you describe a strategy — say, "mean reversion strategy for large-cap stocks using Bollinger Bands and RSI" — the prompt goes to Claude with a purpose-built system prompt. This system prompt tells Claude exactly what interface to implement, what methods to write, and what constraints to follow.
+When you describe a strategy — say, "mean reversion strategy for large-cap stocks using Bollinger Bands and RSI" — the prompt goes to the AI with a purpose-built system prompt that specifies exactly what interface to implement, what methods to write, and what constraints to follow.
 
-Claude doesn't just write one strategy. It generates **3–5 distinct approaches**, each implementing the `IStrategy` interface with a unique name and methodology. The key word is *distinct* — not parameter variations of the same logic, but genuinely different implementations.
+The AI doesn't just write one strategy. It generates **3–5 distinct approaches**, each implementing the `IStrategy` interface with a unique name and methodology. The key word is *distinct* — not parameter variations of the same logic, but genuinely different implementations.
 
 ### Step 2: Roslyn compiles each strategy
 
 Each generated strategy is compiled in-process using Microsoft's Roslyn compiler (`Microsoft.CodeAnalysis.CSharp`). This is the same compiler that builds .NET applications. No external tools, no build chain — compilation happens in memory, in milliseconds.
 
-If a strategy has a compilation error, you see it immediately. Claude can fix it in the next conversational turn.
+If a strategy has a compilation error, you see it immediately. The AI can fix it in the next conversational turn.
 
 ### Step 3: Backtesting against real data
 
@@ -47,13 +47,13 @@ You choose which metric matters most. Strategies are ranked accordingly. Want to
 
 ### Step 5: Conversational refinement
 
-Don't like the results? Talk to Claude:
+Don't like the results? Talk to the AI:
 
 - "Make strategy #2 more conservative"
 - "Add a volatility filter to avoid choppy markets"
 - "Try a longer lookback period"
 
-Claude has full context from the conversation and generates new strategies based on your feedback.
+The AI has full context from the conversation and generates new strategies based on your feedback.
 
 ### Step 6: Parameter optimization
 

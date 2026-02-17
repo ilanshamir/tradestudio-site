@@ -7,7 +7,7 @@ tags: ["announcement", "ai", "trading"]
 
 ## What is TradeStudio?
 
-TradeStudio is a Windows desktop application for traders who want AI-powered strategy research without giving up professional-grade charting or code-level control.
+TradeStudio is a cross-platform desktop application for traders who want AI-powered strategy research without giving up professional-grade charting or code-level control.
 
 Most trading platforms bolt AI onto an existing product. A chatbot in a sidebar. A "smart" indicator that's really just a moving average with marketing. TradeStudio was built differently. AI is the core workflow — the thing you use every day, not a feature you forget exists.
 
@@ -16,16 +16,16 @@ Most trading platforms bolt AI onto an existing product. A chatbot in a sidebar.
 Here's the concrete workflow:
 
 1. **You describe a strategy in plain English.** "Momentum strategy using RSI and MACD, avoiding drawdowns over 10%."
-2. **Claude generates 3–5 distinct C# strategies.** Not variations of the same idea — genuinely different approaches to your prompt.
+2. **TradeStudio AI generates 3–5 distinct C# strategies.** Not variations of the same idea — genuinely different approaches to your prompt.
 3. **Roslyn compiles each one in-process.** Real Microsoft C# compilation, not interpreted pseudo-code.
 4. **Every strategy is backtested against your data.** Full metrics: Sharpe, Sortino, Max Drawdown, Win Rate, Profit Factor.
-5. **You refine conversationally.** "Make it more conservative" or "Add a volatility filter." Claude keeps the context.
+5. **You refine conversationally.** "Make it more conservative" or "Add a volatility filter." TradeStudio AI keeps the context.
 
 From idea to backtested results in about 30 seconds.
 
 ## What makes it different
 
-**Earnings Narrative Backtest.** No other platform does this. Feed real earnings transcripts to Claude, get direction/magnitude/confidence predictions, and see quarter-by-quarter accuracy across years of data. You can actually test whether AI earnings analysis is useful — not just hope it is.
+**Earnings Narrative Backtest.** No other platform does this. Feed real earnings transcripts to the AI, get direction/magnitude/confidence predictions, and see quarter-by-quarter accuracy across years of data. You can actually test whether AI earnings analysis is useful — not just hope it is.
 
 **Real code, not a black box.** When the AI generates a strategy, you get C# source code you can read, modify, and extend. Not a no-code workflow that hides what's happening. Not Pine Script. Real, compiled code.
 

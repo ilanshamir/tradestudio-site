@@ -23,7 +23,7 @@ TradeStudio pulls actual earnings call transcripts from Financial Modeling Prep 
 
 ### Blinded predictions
 
-For each quarter, Claude reads the transcript and makes three predictions:
+For each quarter, the AI reads the transcript and makes three predictions:
 
 1. **Direction:** Will the stock go up or down in the next quarter?
 2. **Magnitude:** By how much? (Small, moderate, or large move)
@@ -42,13 +42,13 @@ After predictions are generated for every quarter, TradeStudio compares them aga
 
 ### Cached and affordable
 
-Running a full backtest of SPY from 1990 costs roughly $20 in Anthropic API calls the first time. After that, predictions are cached locally — free forever. New quarters are added incrementally as earnings data becomes available.
+Running a full backtest of SPY from 1990 costs roughly $20 in AI API calls the first time. After that, predictions are cached locally — free forever. New quarters are added incrementally as earnings data becomes available.
 
 ## Why no one else has this
 
 Building this feature requires several things that most platforms don't have:
 
-1. **AI that can analyze long documents.** Earnings transcripts are lengthy. Claude handles them natively.
+1. **AI that can analyze long documents.** Earnings transcripts are lengthy. TradeStudio's AI handles them natively.
 2. **A framework for structured predictions.** Not just "what do you think?" but specific direction, magnitude, and confidence outputs.
 3. **Price data for comparison.** You need historical OHLCV data aligned with earnings dates.
 4. **A willingness to show results honestly.** If the AI is bad at predicting, you'll see it. We don't cherry-pick.

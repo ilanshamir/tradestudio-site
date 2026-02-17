@@ -1,6 +1,6 @@
 ---
 title: "Why Desktop? The Case for Native Performance in Trading Software"
-description: "TradeStudio is a native Windows desktop app. That's not legacy thinking — it's a deliberate architectural choice for performance-critical trading analysis."
+description: "TradeStudio is a native desktop app for Windows, macOS, and Linux. That's not legacy thinking — it's a deliberate architectural choice for performance-critical trading analysis."
 date: 2026-02-10
 tags: ["architecture", "performance", "desktop"]
 ---
@@ -37,7 +37,7 @@ Desktop docking works with the OS, not against it. Drag a chart to a second moni
 
 Let's be honest about the trade-offs:
 
-- **Windows only.** No Mac, no Linux, no iPad. Our users are traders with Windows desktops. If that's not you, TradeStudio isn't for you right now.
+- **Desktop only.** No mobile, no iPad. Our users are traders sitting at desks. If you need charts on your phone, TradeStudio isn't for that.
 - **Installation required.** You need to download and install the app. It's a 2-minute process, but it's not "open a browser tab."
 - **No collaboration features.** You can't share a chart with a URL. TradingView is better for social trading.
 
