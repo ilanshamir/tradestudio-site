@@ -1,0 +1,858 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+// All code blocks stored as frontmatter to avoid Astro parsing curly braces as expressions.
+
+const codePriceChange = `public class PriceChange : IndicatorBase
+{
+    public override string Name =&gt; "Price Change %";
+    public override string Description =&gt; "Bar-over-bar percent change";
+    public override bool IsOverlay =&gt; false;
+    public override IReadOnlyList&lt;IndicatorParameter&gt; Parameters { get; } =
+        Array.Empty&lt;IndicatorParameter&gt;();
+
+    public override List&lt;IndicatorOutput&gt; Calculate(
+        BarSeries bars, IDictionary&lt;string, double&gt;? parameterValues = null)
+    {
+        var values = new double?[bars.Count];
+        for (int i = 1; i &lt; bars.Count; i++)
+            values[i] = (bars[i].Close - bars[i - 1].Close) / bars[i - 1].Close * 100;
+
+        return new List&lt;IndicatorOutput&gt;
+        {
+            new("Change %", values, "#00BFFF", PlotStyle.Histogram)
+        };
+    }
+}`;
+
+const codeGoldenCross = `public class GoldenCross : StrategyBase
+{
+    public override string Name =&gt; "Golden Cross";
+    public override string Description =&gt; "Buy when fast SMA crosses above slow SMA";
+    public override IReadOnlyList&lt;IndicatorParameter&gt; Parameters { get; } = new[]
+    {
+        new IndicatorParameter("Fast", "Fast SMA period", 50, 5, 200),
+        new IndicatorParameter("Slow", "Slow SMA period", 200, 20, 500),
+    };
+
+    protected override Signal?[] GenerateSignals(
+        BarSeries bars, IDictionary&lt;string, double&gt;? parameterValues)
+    {
+        int fast = GetIntParam(parameterValues, "Fast", 50);
+        int slow = GetIntParam(parameterValues, "Slow", 200);
+
+        var fastSma = new SmaIndicator()
+            .Calculate(bars, new Dictionary&lt;string, double&gt; { ["Period"] = fast })[0].Values;
+        var slowSma = new SmaIndicator()
+            .Calculate(bars, new Dictionary&lt;string, double&gt; { ["Period"] = slow })[0].Values;
+
+        var signals = new Signal?[bars.Count];
+        for (int i = 1; i &lt; bars.Count; i++)
+        {
+            if (fastSma[i] is null || slowSma[i] is null ||
+                fastSma[i - 1] is null || slowSma[i - 1] is null)
+                continue;
+
+            bool crossAbove = fastSma[i - 1].Value &lt;= slowSma[i - 1].Value
+                           &amp;&amp; fastSma[i].Value &gt; slowSma[i].Value;
+            bool crossBelow = fastSma[i - 1].Value &gt;= slowSma[i - 1].Value
+                           &amp;&amp; fastSma[i].Value &lt; slowSma[i].Value;
+
+            if (crossAbove) signals[i] = new Signal(SignalType.Buy, "Golden cross");
+            if (crossBelow) signals[i] = new Signal(SignalType.Sell, "Death cross");
+        }
+        return signals;
+    }
+}`;
+
+const codeIIndicator = `public interface IIndicator
+{
+    string Name { get; }
+    string Description { get; }
+    bool IsOverlay { get; }
+    IReadOnlyList&lt;IndicatorParameter&gt; Parameters { get; }
+    List&lt;IndicatorOutput&gt; Calculate(BarSeries bars, IDictionary&lt;string, double&gt;? parameterValues = null);
+}`;
+
+const codeClassDecl = `public class MyIndicator : IndicatorBase
+{`;
+
+const codeMetadata = `    public override string Name =&gt; "My Indicator";
+    public override string Description =&gt; "What it does";
+    public override bool IsOverlay =&gt; true; // true = draw on price chart, false = separate pane`;
+
+const codeParams = `    public override IReadOnlyList&lt;IndicatorParameter&gt; Parameters { get; } = new[]
+    {
+        new IndicatorParameter("Period", "Number of bars to look back", 20, 1, 500),
+        new IndicatorParameter("Multiplier", "Standard deviation multiplier", 2.0, 0.1, 10.0),
+    };`;
+
+const codeCalculate = `    public override List&lt;IndicatorOutput&gt; Calculate(
+        BarSeries bars, IDictionary&lt;string, double&gt;? parameterValues = null)
+    {
+        int period = GetIntParam(parameterValues, "Period", 20);
+        double mult = GetParam(parameterValues, "Multiplier", 2.0);
+
+        var values = new double?[bars.Count];
+
+        for (int i = period - 1; i &lt; bars.Count; i++)
+        {
+            // Your calculation here
+            values[i] = /* computed value */;
+        }
+
+        return new List&lt;IndicatorOutput&gt;
+        {
+            new("My Line", values, "#FFD700", PlotStyle.Line)
+        };
+    }`;
+
+const codeOutput = `new IndicatorOutput(string name, double?[] values, string color, PlotStyle style)`;
+
+const codeMultiOutput = `return new List&lt;IndicatorOutput&gt;
+{
+    new("Upper Band", upper, "#FF6347", PlotStyle.Line),
+    new("Middle",     middle, "#FFFFFF", PlotStyle.Line),
+    new("Lower Band", lower, "#4169E1", PlotStyle.Line),
+};`;
+
+const codeBarAccess = `Bar bar = bars[i];
+bar.Timestamp   // DateTime
+bar.Open        // double
+bar.High        // double
+bar.Low         // double
+bar.Close       // double
+bar.Volume      // long
+bar.IsBullish   // bool (Close &gt;= Open)
+bar.Body        // double (abs(Close - Open))
+bar.Range       // double (High - Low)
+bar.MidPoint    // double ((High + Low) / 2)`;
+
+const codeBarSeriesUtils = `bars.Count                          // number of bars
+bars.Symbol                         // e.g. "AAPL"
+bars.TimeFrame                      // e.g. TimeFrame.Daily
+bars.HighestHigh(startIndex, count) // highest High in range
+bars.LowestLow(startIndex, count)   // lowest Low in range
+bars.MaxVolume(startIndex, count)   // highest Volume in range`;
+
+const codeIStrategy = `public interface IStrategy
+{
+    string Name { get; }
+    string Description { get; }
+    IReadOnlyList&lt;IndicatorParameter&gt; Parameters { get; }
+    StrategyResult Evaluate(BarSeries bars, IDictionary&lt;string, double&gt;? parameterValues = null);
+}`;
+
+const codeStrategyClass = `public class MyStrategy : StrategyBase
+{`;
+
+const codeStrategyMeta = `    public override string Name =&gt; "My Strategy";
+    public override string Description =&gt; "What it does";
+    public override IReadOnlyList&lt;IndicatorParameter&gt; Parameters { get; } = new[]
+    {
+        new IndicatorParameter("Period", "Lookback period", 14, 2, 100),
+    };`;
+
+const codeGenerateSignals = `    protected override Signal?[] GenerateSignals(
+        BarSeries bars, IDictionary&lt;string, double&gt;? parameterValues)
+    {
+        int period = GetIntParam(parameterValues, "Period", 14);
+
+        var signals = new Signal?[bars.Count];
+
+        for (int i = period; i &lt; bars.Count; i++)
+        {
+            if (/* buy condition */)
+                signals[i] = new Signal(SignalType.Buy, "Reason for buying");
+
+            if (/* sell condition */)
+                signals[i] = new Signal(SignalType.Sell, "Reason for selling");
+        }
+
+        return signals;
+    }`;
+
+const codeUseIndicators = `protected override Signal?[] GenerateSignals(
+    BarSeries bars, IDictionary&lt;string, double&gt;? parameterValues)
+{
+    // Calculate RSI
+    var rsi = new RsiIndicator()
+        .Calculate(bars, new Dictionary&lt;string, double&gt; { ["Period"] = 14 })[0].Values;
+
+    // Calculate EMA
+    var ema = new EmaIndicator()
+        .Calculate(bars, new Dictionary&lt;string, double&gt; { ["Period"] = 20 })[0].Values;
+
+    // Calculate Bollinger Bands (multi-output: [0]=Upper, [1]=Middle, [2]=Lower)
+    var bbOutputs = new BollingerBandsIndicator()
+        .Calculate(bars, new Dictionary&lt;string, double&gt; { ["Period"] = 20, ["StdDev"] = 2.0 });
+    var bbUpper = bbOutputs[0].Values;
+    var bbLower = bbOutputs[2].Values;
+
+    var signals = new Signal?[bars.Count];
+    for (int i = 1; i &lt; bars.Count; i++)
+    {
+        if (rsi[i] is null || bbLower[i] is null) continue;
+
+        if (rsi[i].Value &lt; 30 &amp;&amp; bars[i].Close &lt; bbLower[i].Value)
+            signals[i] = new Signal(SignalType.Buy, "RSI oversold + below lower band");
+
+        if (rsi[i].Value &gt; 70 &amp;&amp; bars[i].Close &gt; bbUpper[i]!.Value)
+            signals[i] = new Signal(SignalType.Sell, "RSI overbought + above upper band");
+    }
+    return signals;
+}`;
+
+const codeKeltner = `public class KeltnerChannel : IndicatorBase
+{
+    public override string Name =&gt; "Keltner Channel";
+    public override string Description =&gt; "EMA-based channel using ATR for width";
+    public override bool IsOverlay =&gt; true;
+    public override IReadOnlyList&lt;IndicatorParameter&gt; Parameters { get; } = new[]
+    {
+        new IndicatorParameter("EMA Period", "Center line EMA length", 20, 5, 100),
+        new IndicatorParameter("ATR Period", "ATR calculation length", 10, 5, 50),
+        new IndicatorParameter("Multiplier", "ATR multiplier for channel width", 1.5, 0.5, 5.0),
+    };
+
+    public override List&lt;IndicatorOutput&gt; Calculate(
+        BarSeries bars, IDictionary&lt;string, double&gt;? parameterValues = null)
+    {
+        int emaPeriod = GetIntParam(parameterValues, "EMA Period", 20);
+        int atrPeriod = GetIntParam(parameterValues, "ATR Period", 10);
+        double mult = GetParam(parameterValues, "Multiplier", 1.5);
+
+        var ema = new EmaIndicator()
+            .Calculate(bars, new Dictionary&lt;string, double&gt; { ["Period"] = emaPeriod })[0].Values;
+        var atr = new AtrIndicator()
+            .Calculate(bars, new Dictionary&lt;string, double&gt; { ["Period"] = atrPeriod })[0].Values;
+
+        var upper = new double?[bars.Count];
+        var middle = new double?[bars.Count];
+        var lower = new double?[bars.Count];
+
+        for (int i = 0; i &lt; bars.Count; i++)
+        {
+            if (ema[i] is null || atr[i] is null) continue;
+            middle[i] = ema[i].Value;
+            upper[i] = ema[i].Value + mult * atr[i].Value;
+            lower[i] = ema[i].Value - mult * atr[i].Value;
+        }
+
+        return new List&lt;IndicatorOutput&gt;
+        {
+            new("KC Upper", upper, "#FF6347", PlotStyle.Line),
+            new("KC Middle", middle, "#FFFFFF", PlotStyle.Line),
+            new("KC Lower", lower, "#4169E1", PlotStyle.Line),
+        };
+    }
+}`;
+
+const codeMeanReversion = `public class MeanReversion : StrategyBase
+{
+    public override string Name =&gt; "Mean Reversion";
+    public override string Description =&gt; "Buy when RSI is oversold and price is below lower Bollinger Band";
+    public override IReadOnlyList&lt;IndicatorParameter&gt; Parameters { get; } = new[]
+    {
+        new IndicatorParameter("RSI Period", "RSI lookback", 14, 5, 50),
+        new IndicatorParameter("BB Period", "Bollinger Band lookback", 20, 10, 50),
+        new IndicatorParameter("BB StdDev", "Bollinger Band width", 2.0, 1.0, 4.0),
+        new IndicatorParameter("RSI Oversold", "Buy threshold", 30, 10, 50),
+        new IndicatorParameter("RSI Overbought", "Sell threshold", 70, 50, 90),
+    };
+
+    protected override Signal?[] GenerateSignals(
+        BarSeries bars, IDictionary&lt;string, double&gt;? parameterValues)
+    {
+        int rsiPeriod = GetIntParam(parameterValues, "RSI Period", 14);
+        int bbPeriod = GetIntParam(parameterValues, "BB Period", 20);
+        double bbStdDev = GetParam(parameterValues, "BB StdDev", 2.0);
+        double oversold = GetParam(parameterValues, "RSI Oversold", 30);
+        double overbought = GetParam(parameterValues, "RSI Overbought", 70);
+
+        var rsi = new RsiIndicator()
+            .Calculate(bars, new Dictionary&lt;string, double&gt; { ["Period"] = rsiPeriod })[0].Values;
+        var bb = new BollingerBandsIndicator()
+            .Calculate(bars, new Dictionary&lt;string, double&gt;
+                { ["Period"] = bbPeriod, ["StdDev"] = bbStdDev });
+        var bbUpper = bb[0].Values;
+        var bbLower = bb[2].Values;
+
+        var signals = new Signal?[bars.Count];
+
+        for (int i = 1; i &lt; bars.Count; i++)
+        {
+            if (rsi[i] is null || bbLower[i] is null) continue;
+
+            if (rsi[i].Value &lt; oversold &amp;&amp; bars[i].Close &lt; bbLower[i].Value)
+                signals[i] = new Signal(SignalType.Buy,
+                    $"RSI {rsi[i].Value:F0} &lt; {oversold}, price below lower BB");
+
+            if (rsi[i].Value &gt; overbought)
+                signals[i] = new Signal(SignalType.Sell,
+                    $"RSI {rsi[i].Value:F0} &gt; {overbought}");
+        }
+
+        return signals;
+    }
+}`;
+
+const codeMomentumBreakout = `public class MomentumBreakout : StrategyBase
+{
+    public override string Name =&gt; "Momentum Breakout";
+    public override string Description =&gt; "Buy on N-bar high breakout with volume confirmation";
+    public override IReadOnlyList&lt;IndicatorParameter&gt; Parameters { get; } = new[]
+    {
+        new IndicatorParameter("Lookback", "Bars for high/low channel", 20, 5, 100),
+        new IndicatorParameter("Volume Factor", "Volume must exceed this multiple of average", 1.5, 1.0, 5.0),
+        new IndicatorParameter("Exit Bars", "Sell after N bars", 10, 1, 50),
+    };
+
+    protected override Signal?[] GenerateSignals(
+        BarSeries bars, IDictionary&lt;string, double&gt;? parameterValues)
+    {
+        int lookback = GetIntParam(parameterValues, "Lookback", 20);
+        double volFactor = GetParam(parameterValues, "Volume Factor", 1.5);
+        int exitBars = GetIntParam(parameterValues, "Exit Bars", 10);
+
+        var signals = new Signal?[bars.Count];
+        int barsSinceEntry = -1;
+
+        for (int i = lookback; i &lt; bars.Count; i++)
+        {
+            if (barsSinceEntry &gt;= 0)
+            {
+                barsSinceEntry++;
+                if (barsSinceEntry &gt;= exitBars)
+                {
+                    signals[i] = new Signal(SignalType.Sell, $"Exit after {exitBars} bars");
+                    barsSinceEntry = -1;
+                }
+                continue;
+            }
+
+            double prevHigh = bars.HighestHigh(i - lookback, lookback);
+
+            double avgVolume = 0;
+            for (int j = i - lookback; j &lt; i; j++)
+                avgVolume += bars[j].Volume;
+            avgVolume /= lookback;
+
+            if (bars[i].Close &gt; prevHigh &amp;&amp; bars[i].Volume &gt; avgVolume * volFactor)
+            {
+                signals[i] = new Signal(SignalType.Buy,
+                    $"Broke {lookback}-bar high on {bars[i].Volume / avgVolume:F1}x volume");
+                barsSinceEntry = 0;
+            }
+        }
+
+        return signals;
+    }
+}`;
+
+const codeSma = `double sum = 0;
+for (int i = 0; i &lt; bars.Count; i++)
+{
+    sum += bars[i].Close;
+    if (i &gt;= period)
+        sum -= bars[i - period].Close;
+
+    if (i &gt;= period - 1)
+        values[i] = sum / period;
+}`;
+
+const codeEma = `double multiplier = 2.0 / (period + 1);
+values[0] = bars[0].Close;
+for (int i = 1; i &lt; bars.Count; i++)
+    values[i] = (bars[i].Close - values[i - 1]!.Value) * multiplier + values[i - 1]!.Value;`;
+
+const codeCrossover = `bool crossAbove = fast[i - 1].Value &lt;= slow[i - 1].Value
+               &amp;&amp; fast[i].Value &gt; slow[i].Value;`;
+
+const codeNullCheck = `if (rsi[i] is null) continue;
+double value = rsi[i].Value;`;
+
+const codePatternMatch = `if (rsi[i] is double rsiValue &amp;&amp; rsiValue &lt; 30)
+    signals[i] = new Signal(SignalType.Buy);`;
+---
+
+<BaseLayout title="C# Scripting Guide — TradeStudio" description="Complete guide to writing custom indicators and strategies in C# for TradeStudio. Covers the API, parameters, built-in indicators, the optimizer, and full examples.">
+
+  <section class="py-20 px-6">
+    <div class="mx-auto max-w-3xl">
+
+      <div class="mb-6">
+        <a href="/docs" class="text-sm text-accent-blue hover:underline">&larr; Back to Docs</a>
+      </div>
+
+      <h1 class="text-4xl font-extrabold md:text-5xl">C# Scripting Guide</h1>
+      <p class="mt-4 text-lg text-text-secondary">Write custom indicators and strategies in C# that plug directly into TradeStudio's charting engine, optimizer, and Strategy Lab. No project setup required — just write a <code class="rounded bg-bg-tertiary px-1.5 py-0.5 font-mono text-sm text-accent-green">.cs</code> file, and TradeStudio compiles and loads it automatically.</p>
+
+      <!-- Table of Contents -->
+      <nav class="mt-8 rounded-xl border border-border bg-bg-secondary p-6">
+        <h2 class="mb-4 text-sm font-semibold uppercase tracking-wider text-text-secondary">On this page</h2>
+        <ol class="space-y-2 text-sm">
+          <li><a href="#quick-start" class="text-accent-blue hover:text-text-primary transition-colors">1. Quick Start</a></li>
+          <li><a href="#how-it-works" class="text-accent-blue hover:text-text-primary transition-colors">2. How It Works</a></li>
+          <li><a href="#custom-indicators" class="text-accent-blue hover:text-text-primary transition-colors">3. Writing Custom Indicators</a></li>
+          <li><a href="#bar-data" class="text-accent-blue hover:text-text-primary transition-colors">4. Accessing Bar Data</a></li>
+          <li><a href="#custom-strategies" class="text-accent-blue hover:text-text-primary transition-colors">5. Writing Custom Strategies</a></li>
+          <li><a href="#built-in-indicators" class="text-accent-blue hover:text-text-primary transition-colors">6. Built-in Indicators Reference</a></li>
+          <li><a href="#optimizer" class="text-accent-blue hover:text-text-primary transition-colors">7. The Optimizer</a></li>
+          <li><a href="#strategy-stats" class="text-accent-blue hover:text-text-primary transition-colors">8. Strategy Statistics</a></li>
+          <li><a href="#look-ahead-bias" class="text-accent-blue hover:text-text-primary transition-colors">9. Look-Ahead Bias Detection</a></li>
+          <li><a href="#examples" class="text-accent-blue hover:text-text-primary transition-colors">10. Complete Examples</a></li>
+          <li><a href="#patterns" class="text-accent-blue hover:text-text-primary transition-colors">11. Common Patterns</a></li>
+          <li><a href="#mistakes" class="text-accent-blue hover:text-text-primary transition-colors">12. Common Mistakes</a></li>
+          <li><a href="#file-management" class="text-accent-blue hover:text-text-primary transition-colors">13. File Management</a></li>
+        </ol>
+      </nav>
+
+      <!-- 1. Quick Start -->
+      <section id="quick-start" class="mt-16">
+        <h2 class="text-2xl font-bold">1. Quick Start</h2>
+
+        <div class="mt-6">
+          <h3 class="text-lg font-semibold text-text-primary">Your First Indicator</h3>
+          <p class="mt-2 text-text-secondary">Open <strong>Code Editor</strong> from the toolbar, paste this, and click <strong>Compile</strong>:</p>
+          <pre class="mt-3 rounded-lg border border-border bg-bg-tertiary p-4 overflow-x-auto text-sm font-mono"><code class="text-text-primary" set:html={codePriceChange} /></pre>
+          <p class="mt-3 text-text-secondary">It appears in the <strong>Indicators &gt; + Add</strong> menu immediately. Select it to see a histogram below the chart.</p>
+        </div>
+
+        <div class="mt-8">
+          <h3 class="text-lg font-semibold text-text-primary">Your First Strategy</h3>
+          <pre class="mt-3 rounded-lg border border-border bg-bg-tertiary p-4 overflow-x-auto text-sm font-mono"><code class="text-text-primary" set:html={codeGoldenCross} /></pre>
+          <p class="mt-3 text-text-secondary">It appears in the <strong>Strategy &gt; + Set</strong> menu. Apply it to see buy/sell arrows on the chart with full backtest stats.</p>
+        </div>
+      </section>
+
+      <!-- 2. How It Works -->
+      <section id="how-it-works" class="mt-16">
+        <h2 class="text-2xl font-bold">2. How It Works</h2>
+        <div class="mt-4 space-y-4 text-text-secondary">
+          <p>TradeStudio uses <strong>Roslyn</strong> (the C# compiler) to compile your <code class="rounded bg-bg-tertiary px-1.5 py-0.5 font-mono text-sm text-accent-green">.cs</code> files at runtime. All necessary namespaces are auto-imported — you never need <code class="rounded bg-bg-tertiary px-1.5 py-0.5 font-mono text-sm text-accent-green">using</code> statements. Just write your class and go.</p>
+          <p>Scripts are stored in the <strong>scripts</strong> folder next to the application. TradeStudio watches this folder and recompiles automatically when files change.</p>
+
+          <h3 class="text-lg font-semibold text-text-primary mt-6">Auto-Imported Namespaces</h3>
+          <p>These are available in every script without any <code class="rounded bg-bg-tertiary px-1.5 py-0.5 font-mono text-sm text-accent-green">using</code> declarations:</p>
+          <div class="rounded-lg border border-border bg-bg-secondary overflow-hidden mt-3">
+            <table class="w-full text-sm">
+              <thead>
+                <tr class="border-b border-border">
+                  <th class="px-4 py-3 text-left font-medium text-text-primary">Namespace</th>
+                  <th class="px-4 py-3 text-left font-medium text-text-primary">What It Provides</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="border-b border-border/50">
+                  <td class="px-4 py-2 font-mono text-accent-green text-xs">System, System.Collections.Generic, System.Linq</td>
+                  <td class="px-4 py-2">Standard .NET</td>
+                </tr>
+                <tr class="border-b border-border/50">
+                  <td class="px-4 py-2 font-mono text-accent-green text-xs">TradeStudio.Core.Models</td>
+                  <td class="px-4 py-2">Bar, BarSeries, TimeFrame</td>
+                </tr>
+                <tr class="border-b border-border/50">
+                  <td class="px-4 py-2 font-mono text-accent-green text-xs">TradeStudio.Core.Indicators</td>
+                  <td class="px-4 py-2">IIndicator, IndicatorBase, IndicatorParameter, IndicatorOutput, PlotStyle</td>
+                </tr>
+                <tr class="border-b border-border/50">
+                  <td class="px-4 py-2 font-mono text-accent-green text-xs">TradeStudio.Core.Strategies</td>
+                  <td class="px-4 py-2">IStrategy, StrategyBase, Signal, SignalType, StrategyResult</td>
+                </tr>
+                <tr>
+                  <td class="px-4 py-2 font-mono text-accent-green text-xs">TradeStudio.Indicators</td>
+                  <td class="px-4 py-2">All built-in indicator classes (SmaIndicator, RsiIndicator, etc.)</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. Writing Custom Indicators -->
+      <section id="custom-indicators" class="mt-16">
+        <h2 class="text-2xl font-bold">3. Writing Custom Indicators</h2>
+
+        <div class="mt-4 space-y-4 text-text-secondary">
+          <h3 class="text-lg font-semibold text-text-primary">The IIndicator Interface</h3>
+          <p>Every indicator implements this interface:</p>
+          <pre class="mt-3 rounded-lg border border-border bg-bg-tertiary p-4 overflow-x-auto text-sm font-mono"><code class="text-text-primary" set:html={codeIIndicator} /></pre>
+          <p class="mt-3">The recommended approach is to extend <code class="rounded bg-bg-tertiary px-1.5 py-0.5 font-mono text-sm text-accent-green">IndicatorBase</code>, which provides helper methods for reading parameters.</p>
+
+          <h3 class="text-lg font-semibold text-text-primary mt-8">Step by Step</h3>
+
+          <p class="mt-4"><strong>1. Create the class</strong></p>
+          <pre class="mt-2 rounded-lg border border-border bg-bg-tertiary p-4 overflow-x-auto text-sm font-mono"><code class="text-text-primary" set:html={codeClassDecl} /></pre>
+          <p class="mt-2">Your class must have a <strong>parameterless constructor</strong> (the default one is fine — don't declare a constructor with arguments).</p>
+
+          <p class="mt-6"><strong>2. Set the metadata</strong></p>
+          <pre class="mt-2 rounded-lg border border-border bg-bg-tertiary p-4 overflow-x-auto text-sm font-mono"><code class="text-text-primary" set:html={codeMetadata} /></pre>
+          <ul class="mt-2 list-disc list-inside space-y-1 pl-4">
+            <li><strong>Overlay indicators</strong> (moving averages, bands, SAR) draw on the main price chart.</li>
+            <li><strong>Non-overlay indicators</strong> (RSI, MACD, volume) get their own pane below the chart.</li>
+          </ul>
+
+          <p class="mt-6"><strong>3. Define parameters</strong></p>
+          <pre class="mt-2 rounded-lg border border-border bg-bg-tertiary p-4 overflow-x-auto text-sm font-mono"><code class="text-text-primary" set:html={codeParams} /></pre>
+          <p class="mt-2"><code class="rounded bg-bg-tertiary px-1.5 py-0.5 font-mono text-sm text-accent-green">IndicatorParameter</code> takes: <code class="rounded bg-bg-tertiary px-1.5 py-0.5 font-mono text-sm text-text-primary">(string name, string description, double defaultValue, double min, double max)</code></p>
+          <ul class="mt-2 list-disc list-inside space-y-1 pl-4">
+            <li><strong>name</strong> — the key used to look up values in the <code class="font-mono text-sm">parameterValues</code> dictionary</li>
+            <li><strong>description</strong> — shown in the parameter editor UI</li>
+            <li><strong>defaultValue</strong> — used when no override is provided</li>
+            <li><strong>min / max</strong> — bounds for the optimizer and parameter sliders</li>
+          </ul>
+          <p class="mt-2">For indicators with no parameters, use <code class="rounded bg-bg-tertiary px-1.5 py-0.5 font-mono text-sm text-accent-green">Array.Empty&lt;IndicatorParameter&gt;()</code>.</p>
+
+          <p class="mt-6"><strong>4. Implement Calculate</strong></p>
+          <pre class="mt-2 rounded-lg border border-border bg-bg-tertiary p-4 overflow-x-auto text-sm font-mono"><code class="text-text-primary" set:html={codeCalculate} /></pre>
+
+          <div class="mt-4 rounded-lg border border-accent-green/30 bg-accent-green/5 p-4">
+            <h4 class="font-semibold text-accent-green">Rules</h4>
+            <ul class="mt-2 list-disc list-inside space-y-1 text-sm">
+              <li><code class="font-mono">Calculate</code> must be a <strong>pure function</strong> — no side effects, no mutable state.</li>
+              <li>The output <code class="font-mono">values</code> array must be the <strong>same length</strong> as <code class="font-mono">bars.Count</code>.</li>
+              <li>Use <code class="font-mono">null</code> for bars where the indicator hasn't accumulated enough data (warm-up period).</li>
+              <li>Use <code class="font-mono">GetIntParam</code> / <code class="font-mono">GetParam</code> to read parameters with defaults.</li>
+            </ul>
+          </div>
+
+          <h3 class="text-lg font-semibold text-text-primary mt-8">IndicatorOutput</h3>
+          <pre class="mt-2 rounded-lg border border-border bg-bg-tertiary p-4 overflow-x-auto text-sm font-mono"><code class="text-text-primary" set:html={codeOutput} /></pre>
+          <div class="rounded-lg border border-border bg-bg-secondary overflow-hidden mt-3">
+            <table class="w-full text-sm">
+              <thead>
+                <tr class="border-b border-border">
+                  <th class="px-4 py-3 text-left font-medium text-text-primary">Field</th>
+                  <th class="px-4 py-3 text-left font-medium text-text-primary">Type</th>
+                  <th class="px-4 py-3 text-left font-medium text-text-primary">Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="border-b border-border/50"><td class="px-4 py-2 font-mono text-accent-green">name</td><td class="px-4 py-2 font-mono">string</td><td class="px-4 py-2">Display name in the legend (e.g. "SMA(20)")</td></tr>
+                <tr class="border-b border-border/50"><td class="px-4 py-2 font-mono text-accent-green">values</td><td class="px-4 py-2 font-mono">double?[]</td><td class="px-4 py-2">One value per bar, null for warm-up period</td></tr>
+                <tr class="border-b border-border/50"><td class="px-4 py-2 font-mono text-accent-green">color</td><td class="px-4 py-2 font-mono">string</td><td class="px-4 py-2">Hex color like "#FFD700"</td></tr>
+                <tr><td class="px-4 py-2 font-mono text-accent-green">style</td><td class="px-4 py-2 font-mono">PlotStyle</td><td class="px-4 py-2">Line, Histogram, Dots, or Area</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3 class="text-lg font-semibold text-text-primary mt-8">Multi-Output Indicators</h3>
+          <p>Return multiple <code class="font-mono text-sm">IndicatorOutput</code> objects for indicators with several lines:</p>
+          <pre class="mt-2 rounded-lg border border-border bg-bg-tertiary p-4 overflow-x-auto text-sm font-mono"><code class="text-text-primary" set:html={codeMultiOutput} /></pre>
+          <p class="mt-2">All outputs from an overlay indicator are drawn on the price chart. All outputs from a non-overlay indicator share the same pane.</p>
+        </div>
+      </section>
+
+      <!-- 4. Accessing Bar Data -->
+      <section id="bar-data" class="mt-16">
+        <h2 class="text-2xl font-bold">4. Accessing Bar Data</h2>
+        <div class="mt-4 space-y-4 text-text-secondary">
+          <p><code class="rounded bg-bg-tertiary px-1.5 py-0.5 font-mono text-sm text-accent-green">BarSeries</code> implements <code class="font-mono text-sm">IReadOnlyList&lt;Bar&gt;</code>. Access individual bars by index:</p>
+          <pre class="mt-3 rounded-lg border border-border bg-bg-tertiary p-4 overflow-x-auto text-sm font-mono"><code class="text-text-primary" set:html={codeBarAccess} /></pre>
+
+          <h3 class="text-lg font-semibold text-text-primary mt-6">Utility Methods on BarSeries</h3>
+          <pre class="mt-2 rounded-lg border border-border bg-bg-tertiary p-4 overflow-x-auto text-sm font-mono"><code class="text-text-primary" set:html={codeBarSeriesUtils} /></pre>
+
+          <div class="mt-4 rounded-lg border border-yellow-500/30 bg-yellow-500/5 p-4">
+            <p class="text-sm"><strong class="text-yellow-400">Important:</strong> The datetime field on <code class="font-mono">Bar</code> is called <code class="font-mono">Timestamp</code>, not <code class="font-mono">Date</code> or <code class="font-mono">DateTime</code>.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 5. Writing Custom Strategies -->
+      <section id="custom-strategies" class="mt-16">
+        <h2 class="text-2xl font-bold">5. Writing Custom Strategies</h2>
+        <div class="mt-4 space-y-4 text-text-secondary">
+
+          <h3 class="text-lg font-semibold text-text-primary">The IStrategy Interface</h3>
+          <pre class="mt-2 rounded-lg border border-border bg-bg-tertiary p-4 overflow-x-auto text-sm font-mono"><code class="text-text-primary" set:html={codeIStrategy} /></pre>
+          <p class="mt-2">Always extend <code class="rounded bg-bg-tertiary px-1.5 py-0.5 font-mono text-sm text-accent-green">StrategyBase</code> rather than implementing <code class="font-mono text-sm">IStrategy</code> directly. <code class="font-mono text-sm">StrategyBase</code> handles signal normalization (enforcing strict Buy/Sell alternation) and computes trade statistics automatically.</p>
+
+          <h3 class="text-lg font-semibold text-text-primary mt-8">Step by Step</h3>
+
+          <p class="mt-4"><strong>1. Create the class</strong></p>
+          <pre class="mt-2 rounded-lg border border-border bg-bg-tertiary p-4 overflow-x-auto text-sm font-mono"><code class="text-text-primary" set:html={codeStrategyClass} /></pre>
+
+          <p class="mt-4"><strong>2. Set metadata and parameters</strong></p>
+          <pre class="mt-2 rounded-lg border border-border bg-bg-tertiary p-4 overflow-x-auto text-sm font-mono"><code class="text-text-primary" set:html={codeStrategyMeta} /></pre>
+          <p class="mt-2">Parameters use <code class="font-mono text-sm">IndicatorParameter</code> — there is no separate <code class="font-mono text-sm">StrategyParameter</code> class.</p>
+
+          <p class="mt-4"><strong>3. Implement GenerateSignals</strong></p>
+          <pre class="mt-2 rounded-lg border border-border bg-bg-tertiary p-4 overflow-x-auto text-sm font-mono"><code class="text-text-primary" set:html={codeGenerateSignals} /></pre>
+
+          <div class="mt-4 rounded-lg border border-accent-green/30 bg-accent-green/5 p-4">
+            <h4 class="font-semibold text-accent-green">Rules</h4>
+            <ul class="mt-2 list-disc list-inside space-y-1 text-sm">
+              <li><code class="font-mono">GenerateSignals</code> must be <strong>protected</strong>, not public.</li>
+              <li>Return a <code class="font-mono">Signal?[]</code> of length <code class="font-mono">bars.Count</code>, with <code class="font-mono">null</code> for bars with no signal.</li>
+              <li>You can emit Buy and Sell signals freely — <code class="font-mono">StrategyBase.Evaluate()</code> normalizes them into strict alternation (a Buy is only kept when flat, a Sell only when holding).</li>
+              <li><code class="font-mono">Signal</code> has two fields: <code class="font-mono">SignalType Type</code> and <code class="font-mono">string? Reason</code>. There are no price, stop-loss, or take-profit fields — trades always execute at the bar's closing price.</li>
+            </ul>
+          </div>
+
+          <h3 class="text-lg font-semibold text-text-primary mt-8">What StrategyBase Does for You</h3>
+          <p>When your strategy is applied, <code class="font-mono text-sm">StrategyBase.Evaluate()</code>:</p>
+          <ol class="mt-2 list-decimal list-inside space-y-1 pl-4">
+            <li>Calls your <code class="font-mono text-sm">GenerateSignals()</code> to get raw signals.</li>
+            <li><strong>Normalizes</strong> them: keeps only alternating Buy &rarr; Sell &rarr; Buy &rarr; Sell sequences.</li>
+            <li><strong>Calculates trades</strong>: entry at the close of the Buy bar, exit at the close of the Sell bar.</li>
+            <li><strong>Computes statistics</strong>: total trades, win rate, average return, total return, max drawdown, profit factor, Sharpe ratio, and Sortino ratio.</li>
+            <li>Returns a <code class="font-mono text-sm">StrategyResult</code> containing signals, stats, and trade records.</li>
+          </ol>
+          <p class="mt-2">You never need to calculate statistics yourself.</p>
+
+          <h3 class="text-lg font-semibold text-text-primary mt-8">Using Built-in Indicators in Strategies</h3>
+          <p>All built-in indicators are available to use inside strategies:</p>
+          <pre class="mt-3 rounded-lg border border-border bg-bg-tertiary p-4 overflow-x-auto text-sm font-mono"><code class="text-text-primary" set:html={codeUseIndicators} /></pre>
+        </div>
+      </section>
+
+      <!-- 6. Built-in Indicators Reference -->
+      <section id="built-in-indicators" class="mt-16">
+        <h2 class="text-2xl font-bold">6. Built-in Indicators Reference</h2>
+        <div class="mt-4 overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead>
+              <tr class="border-b border-border">
+                <th class="py-3 pr-3 text-left font-medium text-text-primary">Class</th>
+                <th class="py-3 px-3 text-left font-medium text-text-primary">Overlay</th>
+                <th class="py-3 px-3 text-left font-medium text-text-primary">Parameters</th>
+                <th class="py-3 pl-3 text-left font-medium text-text-primary">Outputs</th>
+              </tr>
+            </thead>
+            <tbody class="text-text-secondary">
+              <tr class="border-b border-border/50"><td class="py-2 pr-3 font-mono text-accent-green text-xs">SmaIndicator</td><td class="py-2 px-3">yes</td><td class="py-2 px-3">Period(20)</td><td class="py-2 pl-3">[0] SMA line</td></tr>
+              <tr class="border-b border-border/50"><td class="py-2 pr-3 font-mono text-accent-green text-xs">EmaIndicator</td><td class="py-2 px-3">yes</td><td class="py-2 px-3">Period(20)</td><td class="py-2 pl-3">[0] EMA line</td></tr>
+              <tr class="border-b border-border/50"><td class="py-2 pr-3 font-mono text-accent-green text-xs">WmaIndicator</td><td class="py-2 px-3">yes</td><td class="py-2 px-3">Period(20)</td><td class="py-2 pl-3">[0] WMA line</td></tr>
+              <tr class="border-b border-border/50"><td class="py-2 pr-3 font-mono text-accent-green text-xs">HmaIndicator</td><td class="py-2 px-3">yes</td><td class="py-2 px-3">Period(20)</td><td class="py-2 pl-3">[0] HMA line</td></tr>
+              <tr class="border-b border-border/50"><td class="py-2 pr-3 font-mono text-accent-green text-xs">BollingerBandsIndicator</td><td class="py-2 px-3">yes</td><td class="py-2 px-3">Period(20), StdDev(2)</td><td class="py-2 pl-3">[0] Upper, [1] Middle, [2] Lower</td></tr>
+              <tr class="border-b border-border/50"><td class="py-2 pr-3 font-mono text-accent-green text-xs">IchimokuIndicator</td><td class="py-2 px-3">yes</td><td class="py-2 px-3">Tenkan(9), Kijun(26), Senkou(52)</td><td class="py-2 pl-3">[0] Tenkan, [1] Kijun, [2] Senkou A, [3] Senkou B, [4] Chikou</td></tr>
+              <tr class="border-b border-border/50"><td class="py-2 pr-3 font-mono text-accent-green text-xs">ParabolicSarIndicator</td><td class="py-2 px-3">yes</td><td class="py-2 px-3">AFStart(0.02), AFStep(0.02), AFMax(0.2)</td><td class="py-2 pl-3">[0] SAR (Dots)</td></tr>
+              <tr class="border-b border-border/50"><td class="py-2 pr-3 font-mono text-accent-green text-xs">SuperTrendIndicator</td><td class="py-2 px-3">yes</td><td class="py-2 px-3">Period(10), Multiplier(3)</td><td class="py-2 pl-3">[0] SuperTrend</td></tr>
+              <tr class="border-b border-border/50"><td class="py-2 pr-3 font-mono text-accent-green text-xs">VwapIndicator</td><td class="py-2 px-3">yes</td><td class="py-2 px-3">(none)</td><td class="py-2 pl-3">[0] VWAP</td></tr>
+              <tr class="border-b border-border/50"><td class="py-2 pr-3 font-mono text-accent-green text-xs">RsiIndicator</td><td class="py-2 px-3">no</td><td class="py-2 px-3">Period(14)</td><td class="py-2 pl-3">[0] RSI (0-100)</td></tr>
+              <tr class="border-b border-border/50"><td class="py-2 pr-3 font-mono text-accent-green text-xs">MacdIndicator</td><td class="py-2 px-3">no</td><td class="py-2 px-3">Fast(12), Slow(26), Signal(9)</td><td class="py-2 pl-3">[0] MACD, [1] Signal, [2] Histogram</td></tr>
+              <tr class="border-b border-border/50"><td class="py-2 pr-3 font-mono text-accent-green text-xs">StochasticIndicator</td><td class="py-2 px-3">no</td><td class="py-2 px-3">K Period(14), D Period(3)</td><td class="py-2 pl-3">[0] %K, [1] %D</td></tr>
+              <tr class="border-b border-border/50"><td class="py-2 pr-3 font-mono text-accent-green text-xs">WilliamsRIndicator</td><td class="py-2 px-3">no</td><td class="py-2 px-3">Period(14)</td><td class="py-2 pl-3">[0] %R</td></tr>
+              <tr class="border-b border-border/50"><td class="py-2 pr-3 font-mono text-accent-green text-xs">CciIndicator</td><td class="py-2 px-3">no</td><td class="py-2 px-3">Period(20)</td><td class="py-2 pl-3">[0] CCI</td></tr>
+              <tr class="border-b border-border/50"><td class="py-2 pr-3 font-mono text-accent-green text-xs">AdxIndicator</td><td class="py-2 px-3">no</td><td class="py-2 px-3">Period(14)</td><td class="py-2 pl-3">[0] +DI, [1] -DI, [2] ADX</td></tr>
+              <tr class="border-b border-border/50"><td class="py-2 pr-3 font-mono text-accent-green text-xs">ObvIndicator</td><td class="py-2 px-3">no</td><td class="py-2 px-3">(none)</td><td class="py-2 pl-3">[0] OBV</td></tr>
+              <tr><td class="py-2 pr-3 font-mono text-accent-green text-xs">AtrIndicator</td><td class="py-2 px-3">no</td><td class="py-2 px-3">Period(14)</td><td class="py-2 pl-3">[0] ATR</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- 7. The Optimizer -->
+      <section id="optimizer" class="mt-16">
+        <h2 class="text-2xl font-bold">7. The Optimizer</h2>
+        <div class="mt-4 space-y-4 text-text-secondary">
+          <p>When you define parameters on your strategy, TradeStudio can optimize them automatically:</p>
+          <ol class="mt-2 list-decimal list-inside space-y-2 pl-4">
+            <li>Apply a strategy to a chart.</li>
+            <li>Click <strong>Optimize</strong> in the Strategy Lab panel.</li>
+            <li>Set min, max, and step for each parameter.</li>
+            <li>Click <strong>Optimize</strong> — TradeStudio tests every combination and ranks by the selected metric.</li>
+            <li>Click <strong>Apply</strong> on any result to use those parameters.</li>
+          </ol>
+          <p>The optimizer evaluates your <code class="font-mono text-sm">GenerateSignals</code> with each parameter combination and scores results based on a weighted formula: Profit Factor (30%), Total Return (30%), Max Drawdown (20%), and Win Rate (20%).</p>
+        </div>
+      </section>
+
+      <!-- 8. Strategy Statistics -->
+      <section id="strategy-stats" class="mt-16">
+        <h2 class="text-2xl font-bold">8. Strategy Statistics</h2>
+        <div class="mt-4 text-text-secondary">
+          <p>Every strategy automatically gets these stats:</p>
+          <div class="rounded-lg border border-border bg-bg-secondary overflow-hidden mt-3">
+            <table class="w-full text-sm">
+              <thead>
+                <tr class="border-b border-border">
+                  <th class="px-4 py-3 text-left font-medium text-text-primary">Stat</th>
+                  <th class="px-4 py-3 text-left font-medium text-text-primary">Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="border-b border-border/50"><td class="px-4 py-2 font-medium text-text-primary">Total Trades</td><td class="px-4 py-2">Number of round-trip trades</td></tr>
+                <tr class="border-b border-border/50"><td class="px-4 py-2 font-medium text-text-primary">Win Rate</td><td class="px-4 py-2">Fraction of profitable trades (0.0 to 1.0)</td></tr>
+                <tr class="border-b border-border/50"><td class="px-4 py-2 font-medium text-text-primary">Avg Return</td><td class="px-4 py-2">Average per-trade return</td></tr>
+                <tr class="border-b border-border/50"><td class="px-4 py-2 font-medium text-text-primary">Total Return</td><td class="px-4 py-2">Sum of all trade returns</td></tr>
+                <tr class="border-b border-border/50"><td class="px-4 py-2 font-medium text-text-primary">Max Drawdown</td><td class="px-4 py-2">Largest peak-to-trough decline</td></tr>
+                <tr class="border-b border-border/50"><td class="px-4 py-2 font-medium text-text-primary">Profit Factor</td><td class="px-4 py-2">Gross profit / gross loss</td></tr>
+                <tr class="border-b border-border/50"><td class="px-4 py-2 font-medium text-text-primary">Sharpe Ratio</td><td class="px-4 py-2">Risk-adjusted return</td></tr>
+                <tr><td class="px-4 py-2 font-medium text-text-primary">Sortino Ratio</td><td class="px-4 py-2">Downside risk-adjusted return</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mt-3">These are computed automatically by <code class="font-mono text-sm">StrategyBase</code> — you never calculate them manually.</p>
+        </div>
+      </section>
+
+      <!-- 9. Look-Ahead Bias Detection -->
+      <section id="look-ahead-bias" class="mt-16">
+        <h2 class="text-2xl font-bold">9. Look-Ahead Bias Detection</h2>
+        <div class="mt-4 space-y-4 text-text-secondary">
+          <p>TradeStudio automatically detects <strong>look-ahead bias</strong> (retrospective calculation) in your indicators and strategies. It works by calculating outputs on progressively truncated data and checking whether past values change when future bars are removed.</p>
+
+          <p>If detected:</p>
+          <ul class="mt-2 list-disc list-inside space-y-1 pl-4">
+            <li><strong>Indicators</strong> are flagged with a "retro" label but can still be applied.</li>
+            <li><strong>Strategies</strong> with look-ahead bias are <strong>blocked</strong> from being applied to charts, since they would produce unreliable backtest results.</li>
+          </ul>
+
+          <div class="mt-4 rounded-lg border border-yellow-500/30 bg-yellow-500/5 p-4">
+            <h4 class="font-semibold text-yellow-400">Common Causes of Look-Ahead Bias</h4>
+            <ul class="mt-2 list-disc list-inside space-y-1 text-sm">
+              <li>Normalizing values based on the full dataset's min/max</li>
+              <li>Using <code class="font-mono">bars.Count</code> to access the last bar and working backwards</li>
+              <li>Any calculation where a bar's value depends on future bars</li>
+            </ul>
+            <p class="mt-2 text-sm">To avoid it, only use data from index <code class="font-mono">0</code> through <code class="font-mono">i</code> when computing the value at index <code class="font-mono">i</code>.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 10. Complete Examples -->
+      <section id="examples" class="mt-16">
+        <h2 class="text-2xl font-bold">10. Complete Examples</h2>
+
+        <div class="mt-6">
+          <h3 class="text-lg font-semibold text-text-primary">Keltner Channel (Multi-Output Overlay Indicator)</h3>
+          <pre class="mt-3 rounded-lg border border-border bg-bg-tertiary p-4 overflow-x-auto text-sm font-mono"><code class="text-text-primary" set:html={codeKeltner} /></pre>
+        </div>
+
+        <div class="mt-8">
+          <h3 class="text-lg font-semibold text-text-primary">Mean Reversion Strategy</h3>
+          <pre class="mt-3 rounded-lg border border-border bg-bg-tertiary p-4 overflow-x-auto text-sm font-mono"><code class="text-text-primary" set:html={codeMeanReversion} /></pre>
+        </div>
+
+        <div class="mt-8">
+          <h3 class="text-lg font-semibold text-text-primary">Momentum Breakout Strategy</h3>
+          <pre class="mt-3 rounded-lg border border-border bg-bg-tertiary p-4 overflow-x-auto text-sm font-mono"><code class="text-text-primary" set:html={codeMomentumBreakout} /></pre>
+        </div>
+      </section>
+
+      <!-- 11. Common Patterns -->
+      <section id="patterns" class="mt-16">
+        <h2 class="text-2xl font-bold">11. Common Patterns</h2>
+        <div class="mt-4 space-y-6 text-text-secondary">
+
+          <div>
+            <h3 class="text-lg font-semibold text-text-primary">Computing a Simple Moving Average</h3>
+            <pre class="mt-2 rounded-lg border border-border bg-bg-tertiary p-4 overflow-x-auto text-sm font-mono"><code class="text-text-primary" set:html={codeSma} /></pre>
+          </div>
+
+          <div>
+            <h3 class="text-lg font-semibold text-text-primary">Computing an Exponential Moving Average</h3>
+            <pre class="mt-2 rounded-lg border border-border bg-bg-tertiary p-4 overflow-x-auto text-sm font-mono"><code class="text-text-primary" set:html={codeEma} /></pre>
+          </div>
+
+          <div>
+            <h3 class="text-lg font-semibold text-text-primary">Detecting Crossovers</h3>
+            <pre class="mt-2 rounded-lg border border-border bg-bg-tertiary p-4 overflow-x-auto text-sm font-mono"><code class="text-text-primary" set:html={codeCrossover} /></pre>
+          </div>
+
+          <div>
+            <h3 class="text-lg font-semibold text-text-primary">Null-Safe Value Access</h3>
+            <p class="mt-2">Indicator output values are <code class="font-mono">double?</code> — always check for null before using:</p>
+            <pre class="mt-2 rounded-lg border border-border bg-bg-tertiary p-4 overflow-x-auto text-sm font-mono"><code class="text-text-primary" set:html={codeNullCheck} /></pre>
+            <p class="mt-3">Or with pattern matching:</p>
+            <pre class="mt-2 rounded-lg border border-border bg-bg-tertiary p-4 overflow-x-auto text-sm font-mono"><code class="text-text-primary" set:html={codePatternMatch} /></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- 12. Common Mistakes -->
+      <section id="mistakes" class="mt-16">
+        <h2 class="text-2xl font-bold">12. Common Mistakes</h2>
+        <div class="mt-4 overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead>
+              <tr class="border-b border-border">
+                <th class="py-3 pr-4 text-left font-medium text-text-primary">Mistake</th>
+                <th class="py-3 pl-4 text-left font-medium text-text-primary">Fix</th>
+              </tr>
+            </thead>
+            <tbody class="text-text-secondary">
+              <tr class="border-b border-border/50">
+                <td class="py-3 pr-4"><code class="font-mono text-red-400">bars[i].Date</code></td>
+                <td class="py-3 pl-4">Use <code class="font-mono text-accent-green">bars[i].Timestamp</code></td>
+              </tr>
+              <tr class="border-b border-border/50">
+                <td class="py-3 pr-4"><code class="font-mono text-red-400">public override Signal?[] GenerateSignals(...)</code></td>
+                <td class="py-3 pl-4">Must be <code class="font-mono text-accent-green">protected override</code></td>
+              </tr>
+              <tr class="border-b border-border/50">
+                <td class="py-3 pr-4"><code class="font-mono text-red-400">new IndicatorParameter("Period", 20, 1, 500)</code></td>
+                <td class="py-3 pl-4">Second arg is description: <code class="font-mono text-accent-green">"Period", "Description", 20, 1, 500</code></td>
+              </tr>
+              <tr class="border-b border-border/50">
+                <td class="py-3 pr-4">Using <code class="font-mono text-red-400">System.Drawing.Color</code></td>
+                <td class="py-3 pl-4">Use hex strings: <code class="font-mono text-accent-green">"#FFD700"</code></td>
+              </tr>
+              <tr class="border-b border-border/50">
+                <td class="py-3 pr-4">Output array wrong length</td>
+                <td class="py-3 pl-4">Must always be <code class="font-mono text-accent-green">bars.Count</code></td>
+              </tr>
+              <tr class="border-b border-border/50">
+                <td class="py-3 pr-4">Adding a constructor with parameters</td>
+                <td class="py-3 pl-4">Registry discovery requires a parameterless constructor</td>
+              </tr>
+              <tr class="border-b border-border/50">
+                <td class="py-3 pr-4">Accessing <code class="font-mono text-red-400">bars[bars.Count - 1]</code> in a loop</td>
+                <td class="py-3 pl-4">Causes look-ahead bias if used to normalize past values</td>
+              </tr>
+              <tr>
+                <td class="py-3 pr-4">Forgetting null checks on indicator values</td>
+                <td class="py-3 pl-4">Warm-up period values are <code class="font-mono">null</code> — always check before using <code class="font-mono">.Value</code></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- 13. File Management -->
+      <section id="file-management" class="mt-16 mb-16">
+        <h2 class="text-2xl font-bold">13. File Management</h2>
+        <div class="mt-4 text-text-secondary">
+          <ul class="space-y-3">
+            <li class="flex items-start gap-3">
+              <span class="text-accent-green font-bold mt-0.5">&bull;</span>
+              <span><strong class="text-text-primary">Scripts folder</strong> — located next to the TradeStudio executable</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="text-accent-green font-bold mt-0.5">&bull;</span>
+              <span><strong class="text-text-primary">Hot reload</strong> — save a <code class="font-mono text-sm">.cs</code> file and TradeStudio recompiles it automatically</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="text-accent-green font-bold mt-0.5">&bull;</span>
+              <span><strong class="text-text-primary">Multiple classes per file</strong> — you can put both an indicator and a strategy in the same file</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="text-accent-green font-bold mt-0.5">&bull;</span>
+              <span><strong class="text-text-primary">Code Editor</strong> — use the built-in editor to write, compile, and test scripts with AI assistance</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="text-accent-green font-bold mt-0.5">&bull;</span>
+              <span><strong class="text-text-primary">AI Chat</strong> — the Code Editor includes an AI assistant that can help write and debug scripts</span>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+    </div>
+  </section>
+
+</BaseLayout>
+
+<style is:global>
+  .prose-custom h1 { color: var(--color-text-primary); }
+  .prose-custom h2 {
+    color: var(--color-text-primary);
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+  }
+</style>

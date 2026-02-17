@@ -1,37 +1,53 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 
-const indicatorCode = `public class MyIndicator : IIndicator
+const indicatorCode = `public class MyCustomSma : IndicatorBase
 {
-    public string Name =&gt; "My Custom SMA";
-
-    public IndicatorResult Calculate(IReadOnlyList&lt;Bar&gt; bars,
-        Dictionary&lt;string, object&gt; parameters)
+    public override string Name =&gt; "My Custom SMA";
+    public override string Description =&gt; "Simple moving average";
+    public override bool IsOverlay =&gt; true;
+    public override IReadOnlyList&lt;IndicatorParameter&gt; Parameters { get; } = new[]
     {
-        int period = (int)parameters["Period"];
-        var values = new double[bars.Count];
+        new IndicatorParameter("Period", "Lookback period", 20, 1, 500),
+    };
 
-        for (int i = period - 1; i &lt; bars.Count; i++)
+    public override List&lt;IndicatorOutput&gt; Calculate(
+        BarSeries bars, IDictionary&lt;string, double&gt;? parameterValues = null)
+    {
+        int period = GetIntParam(parameterValues, "Period", 20);
+        var values = new double?[bars.Count];
+        double sum = 0;
+
+        for (int i = 0; i &lt; bars.Count; i++)
         {
-            double sum = 0;
-            for (int j = 0; j &lt; period; j++)
-                sum += bars[i - j].Close;
-            values[i] = sum / period;
+            sum += bars[i].Close;
+            if (i &gt;= period) sum -= bars[i - period].Close;
+            if (i &gt;= period - 1) values[i] = sum / period;
         }
 
-        return new IndicatorResult("MySMA", values);
+        return new List&lt;IndicatorOutput&gt;
+        {
+            new("SMA", values, "#FFD700", PlotStyle.Line)
+        };
     }
 }`;
 
-const strategyCode = `public class MyStrategy : IStrategy
+const strategyCode = `public class GoldenCross : StrategyBase
 {
-    public string Name =&gt; "Golden Cross";
-
-    public StrategyResult Evaluate(IReadOnlyList&lt;Bar&gt; bars,
-        Dictionary&lt;string, object&gt; parameters)
+    public override string Name =&gt; "Golden Cross";
+    public override string Description =&gt; "Buy on SMA crossover";
+    public override IReadOnlyList&lt;IndicatorParameter&gt; Parameters { get; } = new[]
     {
-        // Your strategy logic here
-        // Return buy/sell signals
+        new IndicatorParameter("Fast", "Fast SMA", 50, 5, 200),
+        new IndicatorParameter("Slow", "Slow SMA", 200, 20, 500),
+    };
+
+    protected override Signal?[] GenerateSignals(
+        BarSeries bars, IDictionary&lt;string, double&gt;? parameterValues)
+    {
+        int fast = GetIntParam(parameterValues, "Fast", 50);
+        int slow = GetIntParam(parameterValues, "Slow", 200);
+        // Calculate SMAs and detect crossovers...
     }
 }`;
 ---
@@ -136,7 +152,7 @@ const strategyCode = `public class MyStrategy : IStrategy
       <section id="scripting" class="mt-16">
         <h2 class="text-2xl font-bold">5. Writing a custom script</h2>
         <div class="mt-4 space-y-4 text-text-secondary">
-          <p>TradeStudio supports custom indicators and strategies written in C#. Scripts are compiled in-process by Roslyn.</p>
+          <p>TradeStudio supports custom indicators and strategies written in C#. Scripts are compiled in-process by Roslyn. All namespaces are auto-imported — just write your class and go.</p>
 
           <h4 class="font-semibold text-text-primary">Custom Indicator</h4>
           <pre class="rounded-lg border border-border bg-bg-tertiary p-4 overflow-x-auto text-sm font-mono"><code class="text-text-primary" set:html={indicatorCode} /></pre>
@@ -145,6 +161,14 @@ const strategyCode = `public class MyStrategy : IStrategy
           <pre class="rounded-lg border border-border bg-bg-tertiary p-4 overflow-x-auto text-sm font-mono"><code class="text-text-primary" set:html={strategyCode} /></pre>
 
           <p>Save your scripts to the scripts directory. <strong>FileSystemWatcher</strong> hot-reloads them automatically — no restart needed.</p>
+
+          <div class="mt-6 rounded-xl border border-accent-green/30 bg-accent-green/5 p-6">
+            <h4 class="font-semibold text-accent-green text-lg">Full Scripting Guide</h4>
+            <p class="mt-2 text-sm">The complete reference covers the IIndicator and IStrategy APIs, all 17 built-in indicators, the parameter optimizer, look-ahead bias detection, and full working examples.</p>
+            <a href="/docs/scripting" class="mt-4 inline-block rounded-lg bg-accent-green px-5 py-2.5 text-sm font-semibold text-white hover:bg-accent-green-hover transition-colors">
+              Read the C# Scripting Guide &rarr;
+            </a>
+          </div>
         </div>
       </section>
 
