@@ -18,7 +18,7 @@ But if you've been writing Pine Script for a while, you've probably hit the wall
 
 ## What C# gives you
 
-TradeStudio uses C# for custom indicators and strategies, compiled in-process by Roslyn. Here's what that means in practice:
+Tradevoy uses C# for custom indicators and strategies, compiled in-process by Roslyn. Here's what that means in practice:
 
 ### Full-featured language
 
@@ -56,7 +56,7 @@ if ta.crossunder(fast, slow)
     strategy.close("Long")
 ```
 
-**C# (TradeStudio):**
+**C# (Tradevoy):**
 ```csharp
 public class MACross : IStrategy
 {
@@ -98,12 +98,12 @@ Yes, the C# version is longer. But it's also:
 You don't have to rewrite everything on day one. Here's a practical approach:
 
 1. **Keep using TradingView for charting and social features.** It's great at what it does.
-2. **Use TradeStudio's Strategy Lab for AI-generated strategies.** Describe what you want in English. Get C# code.
+2. **Use Tradevoy's Strategy Lab for AI-generated strategies.** Describe what you want in English. Get C# code.
 3. **Learn by reading.** The AI generates well-structured C# code. Read it. Modify it. That's how you learn.
 4. **Graduate to custom scripts.** When you're comfortable, write your own indicators and strategies. Hot-reload makes iteration fast.
 
 ## Try it
 
-[Download TradeStudio](/download) and open the Strategy Lab. Describe a strategy you've written in Pine Script. See what the AI generates in C#. Compare the two.
+[Download Tradevoy](/download) and open the Strategy Lab. Describe a strategy you've written in Pine Script. See what the AI generates in C#. Compare the two.
 
 You might be surprised how readable the C# version is — especially when you didn't have to write it from scratch.

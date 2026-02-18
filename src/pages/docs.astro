@@ -52,7 +52,7 @@ const strategyCode = `public class GoldenCross : StrategyBase
 }`;
 ---
 
-<BaseLayout title="Documentation — TradeStudio" description="Get started with TradeStudio. Installation, API key setup, charting, AI Strategy Lab, and scripting guides.">
+<BaseLayout title="Documentation — Tradevoy" description="Get started with Tradevoy. Installation, API key setup, charting, AI Strategy Lab, and scripting guides.">
 
   <section class="py-20 px-6">
     <div class="mx-auto max-w-3xl">
@@ -76,12 +76,12 @@ const strategyCode = `public class GoldenCross : StrategyBase
       <section id="installation" class="mt-16">
         <h2 class="text-2xl font-bold">1. Installation</h2>
         <div class="mt-4 space-y-4 text-text-secondary">
-          <p>TradeStudio runs on Windows 10+, macOS 12+, and Linux (Ubuntu 20.04+, Fedora 38+), on both x64 and ARM64 processors.</p>
+          <p>Tradevoy runs on Windows 10+, macOS 12+, and Linux (Ubuntu 20.04+, Fedora 38+), on both x64 and ARM64 processors.</p>
           <ol class="list-decimal list-inside space-y-2 pl-4">
             <li>Download the latest release from the <a href="/download" class="text-accent-blue hover:underline">download page</a></li>
             <li>Install the <a href="https://dotnet.microsoft.com/download/dotnet/10.0" class="text-accent-blue hover:underline" target="_blank" rel="noopener">.NET 10 Runtime</a> if you don't already have it</li>
             <li>Run the installer — no admin rights required</li>
-            <li>Launch TradeStudio from your Start menu or desktop shortcut</li>
+            <li>Launch Tradevoy from your Start menu or desktop shortcut</li>
           </ol>
         </div>
       </section>
@@ -90,7 +90,7 @@ const strategyCode = `public class GoldenCross : StrategyBase
       <section id="api-keys" class="mt-16">
         <h2 class="text-2xl font-bold">2. Setting up API keys</h2>
         <div class="mt-4 space-y-4 text-text-secondary">
-          <p>TradeStudio uses a "bring your own key" model. You pay providers directly — no markup.</p>
+          <p>Tradevoy uses a "bring your own key" model. You pay providers directly — no markup.</p>
 
           <div class="rounded-lg border border-border bg-bg-secondary p-4">
             <h4 class="font-semibold text-text-primary">AI Provider (required for AI features)</h4>
@@ -112,7 +112,7 @@ const strategyCode = `public class GoldenCross : StrategyBase
             <p class="mt-1 text-sm">Required for earnings narrative backtest. Sign up at <a href="https://financialmodelingprep.com" class="text-accent-blue hover:underline" target="_blank" rel="noopener">financialmodelingprep.com</a>.</p>
           </div>
 
-          <p>Open <strong>Settings</strong> in TradeStudio and paste your keys into the appropriate fields.</p>
+          <p>Open <strong>Settings</strong> in Tradevoy and paste your keys into the appropriate fields.</p>
         </div>
       </section>
 
@@ -138,7 +138,7 @@ const strategyCode = `public class GoldenCross : StrategyBase
           <ol class="list-decimal list-inside space-y-2 pl-4">
             <li>Open the <strong>Strategy Lab</strong> tab</li>
             <li>Describe your strategy in the prompt box — e.g., "momentum strategy that avoids drawdowns over 10%"</li>
-            <li>TradeStudio AI generates 3–5 distinct C# strategies</li>
+            <li>Tradevoy AI generates 3–5 distinct C# strategies</li>
             <li>Each strategy is compiled via Roslyn and backtested automatically</li>
             <li>Results are ranked by your chosen fitness metric (Sharpe, Sortino, etc.)</li>
             <li>Click any strategy to see its code, trade log, and detailed metrics</li>
@@ -152,7 +152,7 @@ const strategyCode = `public class GoldenCross : StrategyBase
       <section id="scripting" class="mt-16">
         <h2 class="text-2xl font-bold">5. Writing a custom script</h2>
         <div class="mt-4 space-y-4 text-text-secondary">
-          <p>TradeStudio supports custom indicators and strategies written in C#. Scripts are compiled in-process by Roslyn. All namespaces are auto-imported — just write your class and go.</p>
+          <p>Tradevoy supports custom indicators and strategies written in C#. Scripts are compiled in-process by Roslyn. All namespaces are auto-imported — just write your class and go.</p>
 
           <h4 class="font-semibold text-text-primary">Custom Indicator</h4>
           <pre class="rounded-lg border border-border bg-bg-tertiary p-4 overflow-x-auto text-sm font-mono"><code class="text-text-primary" set:html={indicatorCode} /></pre>

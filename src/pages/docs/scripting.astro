@@ -376,7 +376,7 @@ const codePatternMatch = `if (rsi[i] is double rsiValue &amp;&amp; rsiValue &lt;
     signals[i] = new Signal(SignalType.Buy);`;
 ---
 
-<BaseLayout title="C# Scripting Guide — TradeStudio" description="Complete guide to writing custom indicators and strategies in C# for TradeStudio. Covers the API, parameters, built-in indicators, the optimizer, and full examples.">
+<BaseLayout title="C# Scripting Guide — Tradevoy" description="Complete guide to writing custom indicators and strategies in C# for Tradevoy. Covers the API, parameters, built-in indicators, the optimizer, and full examples.">
 
   <section class="py-20 px-6">
     <div class="mx-auto max-w-3xl">
@@ -386,7 +386,7 @@ const codePatternMatch = `if (rsi[i] is double rsiValue &amp;&amp; rsiValue &lt;
       </div>
 
       <h1 class="text-4xl font-extrabold md:text-5xl">C# Scripting Guide</h1>
-      <p class="mt-4 text-lg text-text-secondary">Write custom indicators and strategies in C# that plug directly into TradeStudio's charting engine, optimizer, and Strategy Lab. No project setup required — just write a <code class="rounded bg-bg-tertiary px-1.5 py-0.5 font-mono text-sm text-accent-green">.cs</code> file, and TradeStudio compiles and loads it automatically.</p>
+      <p class="mt-4 text-lg text-text-secondary">Write custom indicators and strategies in C# that plug directly into Tradevoy's charting engine, optimizer, and Strategy Lab. No project setup required — just write a <code class="rounded bg-bg-tertiary px-1.5 py-0.5 font-mono text-sm text-accent-green">.cs</code> file, and Tradevoy compiles and loads it automatically.</p>
 
       <!-- Table of Contents -->
       <nav class="mt-8 rounded-xl border border-border bg-bg-secondary p-6">
@@ -430,8 +430,8 @@ const codePatternMatch = `if (rsi[i] is double rsiValue &amp;&amp; rsiValue &lt;
       <section id="how-it-works" class="mt-16">
         <h2 class="text-2xl font-bold">2. How It Works</h2>
         <div class="mt-4 space-y-4 text-text-secondary">
-          <p>TradeStudio uses <strong>Roslyn</strong> (the C# compiler) to compile your <code class="rounded bg-bg-tertiary px-1.5 py-0.5 font-mono text-sm text-accent-green">.cs</code> files at runtime. All necessary namespaces are auto-imported — you never need <code class="rounded bg-bg-tertiary px-1.5 py-0.5 font-mono text-sm text-accent-green">using</code> statements. Just write your class and go.</p>
-          <p>Scripts are stored in the <strong>scripts</strong> folder next to the application. TradeStudio watches this folder and recompiles automatically when files change.</p>
+          <p>Tradevoy uses <strong>Roslyn</strong> (the C# compiler) to compile your <code class="rounded bg-bg-tertiary px-1.5 py-0.5 font-mono text-sm text-accent-green">.cs</code> files at runtime. All necessary namespaces are auto-imported — you never need <code class="rounded bg-bg-tertiary px-1.5 py-0.5 font-mono text-sm text-accent-green">using</code> statements. Just write your class and go.</p>
+          <p>Scripts are stored in the <strong>scripts</strong> folder next to the application. Tradevoy watches this folder and recompiles automatically when files change.</p>
 
           <h3 class="text-lg font-semibold text-text-primary mt-6">Auto-Imported Namespaces</h3>
           <p>These are available in every script without any <code class="rounded bg-bg-tertiary px-1.5 py-0.5 font-mono text-sm text-accent-green">using</code> declarations:</p>
@@ -449,19 +449,19 @@ const codePatternMatch = `if (rsi[i] is double rsiValue &amp;&amp; rsiValue &lt;
                   <td class="px-4 py-2">Standard .NET</td>
                 </tr>
                 <tr class="border-b border-border/50">
-                  <td class="px-4 py-2 font-mono text-accent-green text-xs">TradeStudio.Core.Models</td>
+                  <td class="px-4 py-2 font-mono text-accent-green text-xs">Tradevoy.Core.Models</td>
                   <td class="px-4 py-2">Bar, BarSeries, TimeFrame</td>
                 </tr>
                 <tr class="border-b border-border/50">
-                  <td class="px-4 py-2 font-mono text-accent-green text-xs">TradeStudio.Core.Indicators</td>
+                  <td class="px-4 py-2 font-mono text-accent-green text-xs">Tradevoy.Core.Indicators</td>
                   <td class="px-4 py-2">IIndicator, IndicatorBase, IndicatorParameter, IndicatorOutput, PlotStyle</td>
                 </tr>
                 <tr class="border-b border-border/50">
-                  <td class="px-4 py-2 font-mono text-accent-green text-xs">TradeStudio.Core.Strategies</td>
+                  <td class="px-4 py-2 font-mono text-accent-green text-xs">Tradevoy.Core.Strategies</td>
                   <td class="px-4 py-2">IStrategy, StrategyBase, Signal, SignalType, StrategyResult</td>
                 </tr>
                 <tr>
-                  <td class="px-4 py-2 font-mono text-accent-green text-xs">TradeStudio.Indicators</td>
+                  <td class="px-4 py-2 font-mono text-accent-green text-xs">Tradevoy.Indicators</td>
                   <td class="px-4 py-2">All built-in indicator classes (SmaIndicator, RsiIndicator, etc.)</td>
                 </tr>
               </tbody>
@@ -648,12 +648,12 @@ const codePatternMatch = `if (rsi[i] is double rsiValue &amp;&amp; rsiValue &lt;
       <section id="optimizer" class="mt-16">
         <h2 class="text-2xl font-bold">7. The Optimizer</h2>
         <div class="mt-4 space-y-4 text-text-secondary">
-          <p>When you define parameters on your strategy, TradeStudio can optimize them automatically:</p>
+          <p>When you define parameters on your strategy, Tradevoy can optimize them automatically:</p>
           <ol class="mt-2 list-decimal list-inside space-y-2 pl-4">
             <li>Apply a strategy to a chart.</li>
             <li>Click <strong>Optimize</strong> in the Strategy Lab panel.</li>
             <li>Set min, max, and step for each parameter.</li>
-            <li>Click <strong>Optimize</strong> — TradeStudio tests every combination and ranks by the selected metric.</li>
+            <li>Click <strong>Optimize</strong> — Tradevoy tests every combination and ranks by the selected metric.</li>
             <li>Click <strong>Apply</strong> on any result to use those parameters.</li>
           </ol>
           <p>The optimizer evaluates your <code class="font-mono text-sm">GenerateSignals</code> with each parameter combination and scores results based on a weighted formula: Profit Factor (30%), Total Return (30%), Max Drawdown (20%), and Win Rate (20%).</p>
@@ -693,7 +693,7 @@ const codePatternMatch = `if (rsi[i] is double rsiValue &amp;&amp; rsiValue &lt;
       <section id="look-ahead-bias" class="mt-16">
         <h2 class="text-2xl font-bold">9. Look-Ahead Bias Detection</h2>
         <div class="mt-4 space-y-4 text-text-secondary">
-          <p>TradeStudio automatically detects <strong>look-ahead bias</strong> (retrospective calculation) in your indicators and strategies. It works by calculating outputs on progressively truncated data and checking whether past values change when future bars are removed.</p>
+          <p>Tradevoy automatically detects <strong>look-ahead bias</strong> (retrospective calculation) in your indicators and strategies. It works by calculating outputs on progressively truncated data and checking whether past values change when future bars are removed.</p>
 
           <p>If detected:</p>
           <ul class="mt-2 list-disc list-inside space-y-1 pl-4">
@@ -819,11 +819,11 @@ const codePatternMatch = `if (rsi[i] is double rsiValue &amp;&amp; rsiValue &lt;
           <ul class="space-y-3">
             <li class="flex items-start gap-3">
               <span class="text-accent-green font-bold mt-0.5">&bull;</span>
-              <span><strong class="text-text-primary">Scripts folder</strong> — located next to the TradeStudio executable</span>
+              <span><strong class="text-text-primary">Scripts folder</strong> — located next to the Tradevoy executable</span>
             </li>
             <li class="flex items-start gap-3">
               <span class="text-accent-green font-bold mt-0.5">&bull;</span>
-              <span><strong class="text-text-primary">Hot reload</strong> — save a <code class="font-mono text-sm">.cs</code> file and TradeStudio recompiles it automatically</span>
+              <span><strong class="text-text-primary">Hot reload</strong> — save a <code class="font-mono text-sm">.cs</code> file and Tradevoy recompiles it automatically</span>
             </li>
             <li class="flex items-start gap-3">
               <span class="text-accent-green font-bold mt-0.5">&bull;</span>

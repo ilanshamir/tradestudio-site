@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://tradestudio.dev/sitemap-index.xml
+Sitemap: https://tradevoy.ai/sitemap-index.xml

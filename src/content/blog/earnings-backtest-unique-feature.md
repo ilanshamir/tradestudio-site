@@ -1,6 +1,6 @@
 ---
 title: "Backtesting AI Earnings Predictions: A Feature No One Else Has"
-description: "TradeStudio is the only platform that lets you test whether AI can predict stock direction from earnings transcripts. Here's how it works."
+description: "Tradevoy is the only platform that lets you test whether AI can predict stock direction from earnings transcripts. Here's how it works."
 date: 2026-02-12
 tags: ["ai", "earnings", "backtest", "unique"]
 ---
@@ -19,7 +19,7 @@ Here's how:
 
 ### Real transcripts, not summaries
 
-TradeStudio pulls actual earnings call transcripts from Financial Modeling Prep (FMP). Full transcripts — CEO remarks, analyst Q&A, forward guidance. The same information a human analyst would read.
+Tradevoy pulls actual earnings call transcripts from Financial Modeling Prep (FMP). Full transcripts — CEO remarks, analyst Q&A, forward guidance. The same information a human analyst would read.
 
 ### Blinded predictions
 
@@ -33,7 +33,7 @@ Critically, the AI only sees data that was available at the time. No future info
 
 ### Quarter-by-quarter accuracy
 
-After predictions are generated for every quarter, TradeStudio compares them against actual price movements. You see:
+After predictions are generated for every quarter, Tradevoy compares them against actual price movements. You see:
 
 - How often the AI got direction right
 - Whether high-confidence predictions were more accurate
@@ -48,7 +48,7 @@ Running a full backtest of SPY from 1990 costs roughly $20 in AI API calls the f
 
 Building this feature requires several things that most platforms don't have:
 
-1. **AI that can analyze long documents.** Earnings transcripts are lengthy. TradeStudio's AI handles them natively.
+1. **AI that can analyze long documents.** Earnings transcripts are lengthy. Tradevoy's AI handles them natively.
 2. **A framework for structured predictions.** Not just "what do you think?" but specific direction, magnitude, and confidence outputs.
 3. **Price data for comparison.** You need historical OHLCV data aligned with earnings dates.
 4. **A willingness to show results honestly.** If the AI is bad at predicting, you'll see it. We don't cherry-pick.
@@ -63,6 +63,6 @@ That kind of insight is worth more than a chatbot's opinion.
 
 ## Try it yourself
 
-[Download TradeStudio](/download), load SPY (or any ticker with earnings data), and run the Earnings Narrative Backtest. See the results. Draw your own conclusions.
+[Download Tradevoy](/download), load SPY (or any ticker with earnings data), and run the Earnings Narrative Backtest. See the results. Draw your own conclusions.
 
 *Past performance does not guarantee future results. This feature is a research tool for evaluating AI prediction accuracy, not investment advice.*

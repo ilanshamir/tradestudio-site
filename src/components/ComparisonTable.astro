@@ -8,7 +8,7 @@ const { compact = false } = Astro.props;
 const features = [
   {
     name: 'AI Strategy Generation',
-    tradestudio: 'NL \u2192 C# \u2192 Backtest',
+    tradevoy: 'NL \u2192 C# \u2192 Backtest',
     tradingview: '\u2014',
     trendspider: 'NL \u2192 No-code',
     thinkorswim: '\u2014',
@@ -16,7 +16,7 @@ const features = [
   },
   {
     name: 'AI Earnings Backtest',
-    tradestudio: '\u2713 Unique',
+    tradevoy: '\u2713 Unique',
     tradingview: '\u2014',
     trendspider: '\u2014',
     thinkorswim: '\u2014',
@@ -24,7 +24,7 @@ const features = [
   },
   {
     name: 'Desktop Performance',
-    tradestudio: 'Native Desktop',
+    tradevoy: 'Native Desktop',
     tradingview: 'Web',
     trendspider: 'Web',
     thinkorswim: 'Desktop',
@@ -32,7 +32,7 @@ const features = [
   },
   {
     name: 'Custom Scripting',
-    tradestudio: 'C# / Roslyn',
+    tradevoy: 'C# / Roslyn',
     tradingview: 'Pine Script',
     trendspider: 'No-code only',
     thinkorswim: 'thinkScript',
@@ -40,7 +40,7 @@ const features = [
   },
   {
     name: 'Narrative Backtest',
-    tradestudio: '\u2713 Unique',
+    tradevoy: '\u2713 Unique',
     tradingview: '\u2014',
     trendspider: '\u2014',
     thinkorswim: '\u2014',
@@ -48,7 +48,7 @@ const features = [
   },
   {
     name: 'Strategy Scanner',
-    tradestudio: '\u2713',
+    tradevoy: '\u2713',
     tradingview: '\u2713',
     trendspider: '\u2713',
     thinkorswim: '\u2713',
@@ -56,7 +56,7 @@ const features = [
   },
   {
     name: 'Price',
-    tradestudio: 'Early Access',
+    tradevoy: 'Early Access',
     tradingview: 'Free\u2013$60/mo',
     trendspider: '$52\u2013$155/mo',
     thinkorswim: 'Free (Schwab)',
@@ -72,7 +72,7 @@ const displayFeatures = compact ? features.filter(f => ['AI Strategy Generation'
     <thead>
       <tr class="border-b border-border">
         <th class="py-3 pr-4 font-medium text-text-secondary">Feature</th>
-        <th class="py-3 px-4 font-semibold text-accent-green">TradeStudio</th>
+        <th class="py-3 px-4 font-semibold text-accent-green">Tradevoy</th>
         <th class="py-3 px-4 font-medium text-text-secondary">TradingView</th>
         <th class="py-3 px-4 font-medium text-text-secondary">TrendSpider</th>
         <th class="py-3 px-4 font-medium text-text-secondary">Thinkorswim</th>
@@ -83,7 +83,7 @@ const displayFeatures = compact ? features.filter(f => ['AI Strategy Generation'
       {displayFeatures.map(feature => (
         <tr class="border-b border-border/50">
           <td class="py-3 pr-4 font-medium text-text-primary">{feature.name}</td>
-          <td class="py-3 px-4 text-accent-green font-medium">{feature.tradestudio}</td>
+          <td class="py-3 px-4 text-accent-green font-medium">{feature.tradevoy}</td>
           <td class="py-3 px-4 text-text-secondary">{feature.tradingview}</td>
           <td class="py-3 px-4 text-text-secondary">{feature.trendspider}</td>
           <td class="py-3 px-4 text-text-secondary">{feature.thinkorswim}</td>

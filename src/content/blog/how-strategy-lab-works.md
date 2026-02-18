@@ -1,5 +1,5 @@
 ---
-title: "How TradeStudio Uses AI to Generate Trading Strategies"
+title: "How Tradevoy Uses AI to Generate Trading Strategies"
 description: "A deep dive into the Strategy Lab workflow: natural language prompts, C# code generation, Roslyn compilation, and automated backtesting."
 date: 2026-02-14
 tags: ["ai", "strategy-lab", "technical"]
@@ -67,4 +67,4 @@ For traders who know what they want to test but don't want to spend an afternoon
 
 ## Try it yourself
 
-[Download TradeStudio](/download) and open the Strategy Lab tab. Describe an idea. See what happens.
+[Download Tradevoy](/download) and open the Strategy Lab tab. Describe an idea. See what happens.

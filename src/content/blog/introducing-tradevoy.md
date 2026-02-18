@@ -1,25 +1,25 @@
 ---
-title: "Introducing TradeStudio: AI-First Trading Analysis"
-description: "TradeStudio is a desktop trading analysis platform where AI isn't a sidebar — it's the engine. Generate, compile, and backtest C# strategies from natural language."
+title: "Introducing Tradevoy: AI-First Trading Analysis"
+description: "Tradevoy is a desktop trading analysis platform where AI isn't a sidebar — it's the engine. Generate, compile, and backtest C# strategies from natural language."
 date: 2026-02-16
 tags: ["announcement", "ai", "trading"]
 ---
 
-## What is TradeStudio?
+## What is Tradevoy?
 
-TradeStudio is a cross-platform desktop application for traders who want AI-powered strategy research without giving up professional-grade charting or code-level control.
+Tradevoy is a cross-platform desktop application for traders who want AI-powered strategy research without giving up professional-grade charting or code-level control.
 
-Most trading platforms bolt AI onto an existing product. A chatbot in a sidebar. A "smart" indicator that's really just a moving average with marketing. TradeStudio was built differently. AI is the core workflow — the thing you use every day, not a feature you forget exists.
+Most trading platforms bolt AI onto an existing product. A chatbot in a sidebar. A "smart" indicator that's really just a moving average with marketing. Tradevoy was built differently. AI is the core workflow — the thing you use every day, not a feature you forget exists.
 
 ## What it actually does
 
 Here's the concrete workflow:
 
 1. **You describe a strategy in plain English.** "Momentum strategy using RSI and MACD, avoiding drawdowns over 10%."
-2. **TradeStudio AI generates 3–5 distinct C# strategies.** Not variations of the same idea — genuinely different approaches to your prompt.
+2. **Tradevoy AI generates 3–5 distinct C# strategies.** Not variations of the same idea — genuinely different approaches to your prompt.
 3. **Roslyn compiles each one in-process.** Real Microsoft C# compilation, not interpreted pseudo-code.
 4. **Every strategy is backtested against your data.** Full metrics: Sharpe, Sortino, Max Drawdown, Win Rate, Profit Factor.
-5. **You refine conversationally.** "Make it more conservative" or "Add a volatility filter." TradeStudio AI keeps the context.
+5. **You refine conversationally.** "Make it more conservative" or "Add a volatility filter." Tradevoy AI keeps the context.
 
 From idea to backtested results in about 30 seconds.
 
@@ -39,10 +39,10 @@ From idea to backtested results in about 30 seconds.
 
 ## What it's not
 
-TradeStudio is not a brokerage. It doesn't execute trades, hold funds, or connect to brokerage accounts. It's a research and analysis tool.
+Tradevoy is not a brokerage. It doesn't execute trades, hold funds, or connect to brokerage accounts. It's a research and analysis tool.
 
 Past performance does not guarantee future results. AI predictions are research tools, not investment advice.
 
 ## What's next
 
-TradeStudio is in early access. [Join the waitlist](/pricing) to be first in line, or [download the preview](/download) and start testing.
+Tradevoy is in early access. [Join the waitlist](/pricing) to be first in line, or [download the preview](/download) and start testing.
