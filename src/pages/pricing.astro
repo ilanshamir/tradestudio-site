@@ -4,126 +4,202 @@ import FAQAccordion from '../components/FAQAccordion.astro';
 
 const faqs = [
   {
-    question: 'Do I need my own API keys?',
-    answer: 'Yes. For AI features, you provide your own AI API key. For market data, Yahoo Finance is free. Premium data providers (Polygon, FMP, AlphaVantage) require their own API keys. This keeps costs transparent — you pay directly for what you use.'
+    question: 'What happens after my trial ends?',
+    answer: 'Your account will be locked until you subscribe. No credit card is charged automatically.'
   },
   {
-    question: 'What platforms are supported?',
-    answer: 'Windows, macOS, and Linux — x64 and ARM64. Tradevoy is a native desktop application built on .NET 10. We chose desktop deliberately for performance-critical charting and real-time data rendering.'
+    question: 'Can I switch plans?',
+    answer: 'Yes. Upgrades and downgrades are prorated and take effect immediately.'
   },
   {
-    question: 'Is this a brokerage?',
-    answer: 'No. Tradevoy is a research and analysis platform. It does not execute trades, hold funds, or connect to brokerage accounts. It generates, backtests, and analyzes trading strategies.'
+    question: 'What counts as an AI token?',
+    answer: 'AI tokens measure your usage of Tradevoy\'s AI features (chat, narratives, earnings predictions, strategy generation). Higher tiers allow more AI interactions per month.'
   },
   {
-    question: 'How much does the AI cost to use?',
-    answer: 'AI costs depend on your AI API usage. A typical Strategy Lab session (generating and backtesting 3–5 strategies) costs a few cents. An earnings backtest of SPY from 1990 costs roughly $20 the first run, then free forever — predictions are cached locally.'
+    question: 'What counts as a data call?',
+    answer: 'Each request for market data (loading a chart, searching symbols, fetching earnings data) counts as one data call.'
   },
   {
-    question: 'Is there a free trial?',
-    answer: 'Tradevoy is currently in early access. Join the waitlist to get access when it launches.'
+    question: 'What if I hit my limit?',
+    answer: 'You\'ll see a notification and can upgrade to a higher tier for more capacity. Your data and settings are preserved.'
   },
+  {
+    question: 'How do I cancel?',
+    answer: 'You can cancel anytime from the Manage Subscription page. You\'ll keep access until the end of your billing period.'
+  },
+  {
+    question: 'Is there a free plan?',
+    answer: 'No. We offer a generous 14-day free trial with full access to all features. After that, a paid subscription is required.'
+  },
+];
+
+const features = [
+  'AI Chat',
+  'Stock Narratives',
+  'Market Narratives',
+  'Earnings Predictions',
+  'Earnings Backtesting',
+  'Strategy Lab',
+  'Narrative Strategies',
+  'Custom Indicators (C#)',
+  'Custom Strategies (C#)',
+  'Advanced Charting',
+  'Market Data',
+  'Symbol Search',
+  'Scanner',
 ];
 ---
 
-<BaseLayout title="Pricing — Tradevoy" description="Tradevoy pricing and early access information. Join the waitlist to be first in line.">
+<BaseLayout title="Pricing — Tradevoy" description="AI-powered trading analysis for every trader. Start with a free 14-day trial. No credit card required.">
 
+  <!-- Header -->
   <section class="py-20 px-6">
     <div class="mx-auto max-w-5xl text-center">
-      <h1 class="text-4xl font-extrabold md:text-5xl">Early access</h1>
-      <p class="mx-auto mt-4 max-w-2xl text-lg text-text-secondary">Tradevoy is in early access. Join the waitlist to be first in line.</p>
-    </div>
-  </section>
+      <h1 class="text-4xl font-extrabold md:text-5xl">AI-powered trading analysis for every trader</h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-text-secondary">Start with a free 14-day trial. No credit card required.</p>
 
-  <!-- Waitlist Signup -->
-  <section class="border-t border-border bg-bg-secondary py-16 px-6">
-    <div class="mx-auto max-w-lg text-center">
-      <div class="rounded-xl border border-border bg-bg-primary p-8">
-        <div class="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-accent-green/10">
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-accent-green">
-            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-            <polyline points="22,6 12,13 2,6"/>
-          </svg>
-        </div>
-        <h2 class="text-2xl font-bold">Get notified at launch</h2>
-        <p class="mt-2 text-sm text-text-secondary">We'll email you when Tradevoy is ready to download. No spam.</p>
-        <form id="waitlist-form" class="mt-6 flex flex-col gap-3 sm:flex-row">
-          <input
-            type="email"
-            name="email"
-            placeholder="you@example.com"
-            required
-            class="flex-1 rounded-lg border border-border bg-bg-tertiary px-4 py-3 text-sm text-text-primary placeholder:text-text-secondary/50 focus:border-accent-green focus:outline-none focus:ring-1 focus:ring-accent-green"
-          />
-          <button type="submit" id="waitlist-btn" class="rounded-lg bg-accent-green px-6 py-3 text-sm font-semibold text-white hover:bg-accent-green-hover transition-colors">
-            Join waitlist
-          </button>
-        </form>
-        <p id="waitlist-msg" class="mt-3 text-sm hidden"></p>
-        <p class="mt-4 text-xs text-text-secondary/60">Bring your own API keys (AI provider, data providers). No credit card required.</p>
-        <p class="mt-2 text-xs text-text-secondary/60">Questions? Reach us at <a href="mailto:sales@tradevoy.ai" class="text-accent-blue hover:underline">sales@tradevoy.ai</a></p>
+      <!-- Billing Toggle -->
+      <div class="mt-10 flex items-center justify-center gap-3">
+        <span id="label-monthly" class="text-sm font-medium text-text-primary">Monthly</span>
+        <button
+          id="billing-toggle"
+          type="button"
+          role="switch"
+          aria-checked="false"
+          class="relative inline-flex h-7 w-12 shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent bg-bg-tertiary transition-colors focus:outline-none focus:ring-2 focus:ring-accent-green focus:ring-offset-2 focus:ring-offset-bg-primary"
+        >
+          <span class="pointer-events-none inline-block h-5 w-5 translate-x-0.5 rounded-full bg-text-secondary shadow transition-transform" id="toggle-dot"></span>
+        </button>
+        <span id="label-yearly" class="text-sm font-medium text-text-secondary">Yearly <span class="text-accent-green">(Save 20%)</span></span>
       </div>
     </div>
   </section>
 
-  <!-- Planned Pricing Preview -->
-  <section class="py-16 px-6">
+  <!-- Pricing Cards -->
+  <section class="px-6 pb-20">
     <div class="mx-auto max-w-5xl">
-      <h2 class="mb-2 text-center text-2xl font-bold">Planned pricing</h2>
-      <p class="mb-12 text-center text-sm text-text-secondary">Final pricing will be announced at launch. Here's what we're considering.</p>
       <div class="grid gap-6 md:grid-cols-3">
+
         <!-- Starter -->
-        <div class="rounded-xl border border-border bg-bg-secondary p-6">
+        <div class="rounded-xl border border-border bg-bg-secondary p-8 flex flex-col">
           <h3 class="text-lg font-semibold">Starter</h3>
-          <p class="mt-1 text-sm text-text-secondary">Charting & analysis essentials</p>
-          <div class="mt-4">
-            <span class="text-3xl font-bold">~$49</span>
+          <p class="mt-1 text-sm text-text-secondary">For individual traders</p>
+          <div class="mt-6">
+            <span class="text-4xl font-bold" data-monthly="$49" data-yearly="$39" id="price-starter">$49</span>
             <span class="text-text-secondary">/month</span>
           </div>
-          <ul class="mt-6 space-y-3 text-sm text-text-secondary">
-            <li class="flex items-start gap-2"><span class="text-accent-green mt-0.5">&#10003;</span> Professional charting</li>
-            <li class="flex items-start gap-2"><span class="text-accent-green mt-0.5">&#10003;</span> 20+ built-in indicators</li>
-            <li class="flex items-start gap-2"><span class="text-accent-green mt-0.5">&#10003;</span> Built-in strategies</li>
-            <li class="flex items-start gap-2"><span class="text-accent-green mt-0.5">&#10003;</span> Basic backtesting</li>
-            <li class="flex items-start gap-2"><span class="text-accent-green mt-0.5">&#10003;</span> Multi-chart layouts</li>
+          <p class="mt-1 text-xs text-text-secondary h-4" id="billing-note-starter"></p>
+          <ul class="mt-8 space-y-3 text-sm text-text-secondary flex-1">
+            <li class="flex items-start gap-2"><span class="text-accent-green mt-0.5">&#10003;</span> <strong class="text-text-primary">1M</strong> AI tokens/month</li>
+            <li class="flex items-start gap-2"><span class="text-accent-green mt-0.5">&#10003;</span> <strong class="text-text-primary">5,000</strong> data calls/month</li>
+            <li class="flex items-start gap-2"><span class="text-accent-green mt-0.5">&#10003;</span> All features included</li>
           </ul>
+          <a href="/download" class="mt-8 block rounded-lg border border-accent-green px-6 py-3 text-center text-sm font-semibold text-accent-green hover:bg-accent-green hover:text-white transition-colors">
+            Start Free Trial
+          </a>
         </div>
 
-        <!-- Pro -->
-        <div class="rounded-xl border-2 border-accent-green bg-bg-secondary p-6 relative">
-          <div class="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-accent-green px-3 py-0.5 text-xs font-semibold text-white">Most Popular</div>
+        <!-- Pro (Recommended) -->
+        <div class="rounded-xl border-2 border-accent-green bg-bg-secondary p-8 relative flex flex-col">
+          <div class="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-accent-green px-3 py-0.5 text-xs font-semibold text-white">Recommended</div>
           <h3 class="text-lg font-semibold">Pro</h3>
-          <p class="mt-1 text-sm text-text-secondary">Full AI + scripting power</p>
-          <div class="mt-4">
-            <span class="text-3xl font-bold">~$99</span>
+          <p class="mt-1 text-sm text-text-secondary">For active traders & professionals</p>
+          <div class="mt-6">
+            <span class="text-4xl font-bold" data-monthly="$149" data-yearly="$119" id="price-pro">$149</span>
             <span class="text-text-secondary">/month</span>
           </div>
-          <ul class="mt-6 space-y-3 text-sm text-text-secondary">
-            <li class="flex items-start gap-2"><span class="text-accent-green mt-0.5">&#10003;</span> Everything in Starter</li>
-            <li class="flex items-start gap-2"><span class="text-accent-green mt-0.5">&#10003;</span> AI Strategy Lab</li>
-            <li class="flex items-start gap-2"><span class="text-accent-green mt-0.5">&#10003;</span> AI Chat Assistant</li>
-            <li class="flex items-start gap-2"><span class="text-accent-green mt-0.5">&#10003;</span> Earnings backtest</li>
-            <li class="flex items-start gap-2"><span class="text-accent-green mt-0.5">&#10003;</span> C# scripting</li>
-            <li class="flex items-start gap-2"><span class="text-accent-green mt-0.5">&#10003;</span> Parameter optimizer</li>
+          <p class="mt-1 text-xs text-text-secondary h-4" id="billing-note-pro"></p>
+          <ul class="mt-8 space-y-3 text-sm text-text-secondary flex-1">
+            <li class="flex items-start gap-2"><span class="text-accent-green mt-0.5">&#10003;</span> <strong class="text-text-primary">5M</strong> AI tokens/month</li>
+            <li class="flex items-start gap-2"><span class="text-accent-green mt-0.5">&#10003;</span> <strong class="text-text-primary">Unlimited</strong> data calls</li>
+            <li class="flex items-start gap-2"><span class="text-accent-green mt-0.5">&#10003;</span> All features included</li>
           </ul>
+          <a href="/download" class="mt-8 block rounded-lg bg-accent-green px-6 py-3 text-center text-sm font-semibold text-white shadow-lg shadow-accent-green/20 hover:bg-accent-green-hover transition-colors">
+            Start Free Trial
+          </a>
         </div>
 
-        <!-- Unlimited -->
-        <div class="rounded-xl border border-border bg-bg-secondary p-6">
-          <h3 class="text-lg font-semibold">Unlimited</h3>
-          <p class="mt-1 text-sm text-text-secondary">Everything + priority support</p>
-          <div class="mt-4">
-            <span class="text-3xl font-bold">~$149</span>
-            <span class="text-text-secondary">/month</span>
+        <!-- Enterprise -->
+        <div class="rounded-xl border border-border bg-bg-secondary p-8 flex flex-col">
+          <h3 class="text-lg font-semibold">Enterprise</h3>
+          <p class="mt-1 text-sm text-text-secondary">For teams, firms & institutions</p>
+          <div class="mt-6">
+            <span class="text-4xl font-bold">Custom</span>
           </div>
-          <ul class="mt-6 space-y-3 text-sm text-text-secondary">
-            <li class="flex items-start gap-2"><span class="text-accent-green mt-0.5">&#10003;</span> Everything in Pro</li>
-            <li class="flex items-start gap-2"><span class="text-accent-green mt-0.5">&#10003;</span> Priority support</li>
-            <li class="flex items-start gap-2"><span class="text-accent-green mt-0.5">&#10003;</span> Early access to new features</li>
-            <li class="flex items-start gap-2"><span class="text-accent-green mt-0.5">&#10003;</span> Strategy scanner</li>
+          <p class="mt-1 text-xs text-text-secondary h-4">Custom terms & invoicing</p>
+          <ul class="mt-8 space-y-3 text-sm text-text-secondary flex-1">
+            <li class="flex items-start gap-2"><span class="text-accent-green mt-0.5">&#10003;</span> <strong class="text-text-primary">Unlimited</strong> AI tokens</li>
+            <li class="flex items-start gap-2"><span class="text-accent-green mt-0.5">&#10003;</span> <strong class="text-text-primary">Unlimited</strong> data calls</li>
+            <li class="flex items-start gap-2"><span class="text-accent-green mt-0.5">&#10003;</span> All features + priority support</li>
+            <li class="flex items-start gap-2"><span class="text-accent-green mt-0.5">&#10003;</span> SLA & dedicated support</li>
           </ul>
+          <a href="mailto:sales@tradevoy.ai" class="mt-8 block rounded-lg border border-border px-6 py-3 text-center text-sm font-semibold text-text-primary hover:border-accent-green hover:text-accent-green transition-colors">
+            Contact Sales
+          </a>
         </div>
+
       </div>
+
+      <p class="mt-6 text-center text-sm text-text-secondary">All plans start with a free 14-day trial with full access. No credit card required.</p>
+    </div>
+  </section>
+
+  <!-- Feature Comparison Table -->
+  <section class="border-t border-border bg-bg-secondary py-16 px-6">
+    <div class="mx-auto max-w-4xl">
+      <h2 class="mb-2 text-center text-2xl font-bold">All features, every tier</h2>
+      <p class="mb-10 text-center text-sm text-text-secondary">No feature gating. Starter users get the same capabilities as Pro. The only difference is usage volume.</p>
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="border-b border-border">
+              <th class="py-3 pr-4 text-left font-medium text-text-secondary">Feature</th>
+              <th class="py-3 px-4 text-center font-medium text-text-secondary">Starter</th>
+              <th class="py-3 px-4 text-center font-medium text-text-secondary">Pro</th>
+              <th class="py-3 pl-4 text-center font-medium text-text-secondary">Enterprise</th>
+            </tr>
+          </thead>
+          <tbody>
+            {features.map(feature => (
+              <tr class="border-b border-border/50">
+                <td class="py-3 pr-4 text-text-primary">{feature}</td>
+                <td class="py-3 px-4 text-center text-accent-green">&#10003;</td>
+                <td class="py-3 px-4 text-center text-accent-green">&#10003;</td>
+                <td class="py-3 pl-4 text-center text-accent-green">&#10003;</td>
+              </tr>
+            ))}
+            <tr class="border-b border-border/50">
+              <td class="py-3 pr-4 text-text-primary">Priority Support</td>
+              <td class="py-3 px-4 text-center text-text-secondary/40">&mdash;</td>
+              <td class="py-3 px-4 text-center text-text-secondary/40">&mdash;</td>
+              <td class="py-3 pl-4 text-center text-accent-green">&#10003;</td>
+            </tr>
+            <tr class="border-b border-border/50">
+              <td class="py-3 pr-4 text-text-primary">AI Tokens</td>
+              <td class="py-3 px-4 text-center text-text-primary">1M/mo</td>
+              <td class="py-3 px-4 text-center text-text-primary">5M/mo</td>
+              <td class="py-3 pl-4 text-center text-text-primary">Unlimited</td>
+            </tr>
+            <tr>
+              <td class="py-3 pr-4 text-text-primary">Data Calls</td>
+              <td class="py-3 px-4 text-center text-text-primary">5,000/mo</td>
+              <td class="py-3 px-4 text-center text-text-primary">Unlimited</td>
+              <td class="py-3 pl-4 text-center text-text-primary">Unlimited</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- Enterprise CTA -->
+  <section class="py-16 px-6">
+    <div class="mx-auto max-w-2xl text-center">
+      <h2 class="text-2xl font-bold">Need unlimited access for your team?</h2>
+      <p class="mt-3 text-text-secondary">Custom pricing, invoicing, SLA, and dedicated support for firms and institutions.</p>
+      <a href="mailto:sales@tradevoy.ai" class="mt-6 inline-block rounded-lg border border-border px-8 py-3 text-sm font-semibold text-text-primary hover:border-accent-green hover:text-accent-green transition-colors">
+        Contact Sales
+      </a>
     </div>
   </section>
 
@@ -136,38 +212,51 @@ const faqs = [
   </section>
 
   <script>
-    const form = document.getElementById('waitlist-form') as HTMLFormElement;
-    const btn = document.getElementById('waitlist-btn') as HTMLButtonElement;
-    const msg = document.getElementById('waitlist-msg') as HTMLParagraphElement;
+    const toggle = document.getElementById('billing-toggle') as HTMLButtonElement;
+    const dot = document.getElementById('toggle-dot') as HTMLSpanElement;
+    const labelMonthly = document.getElementById('label-monthly') as HTMLSpanElement;
+    const labelYearly = document.getElementById('label-yearly') as HTMLSpanElement;
+    const priceStarter = document.getElementById('price-starter') as HTMLSpanElement;
+    const pricePro = document.getElementById('price-pro') as HTMLSpanElement;
+    const noteStarter = document.getElementById('billing-note-starter') as HTMLParagraphElement;
+    const notePro = document.getElementById('billing-note-pro') as HTMLParagraphElement;
 
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      btn.disabled = true;
-      btn.textContent = 'Submitting...';
-      msg.classList.add('hidden');
+    let isYearly = false;
 
-      try {
-        const res = await fetch('/api/waitlist', {
-          method: 'POST',
-          body: new FormData(form),
-        });
-        const data = await res.json();
+    function updatePricing() {
+      const key = isYearly ? 'yearly' : 'monthly';
+      priceStarter.textContent = priceStarter.dataset[key] ?? '';
+      pricePro.textContent = pricePro.dataset[key] ?? '';
 
-        if (res.ok) {
-          msg.textContent = data.message;
-          msg.className = 'mt-3 text-sm text-accent-green';
-          form.reset();
-        } else {
-          msg.textContent = data.error;
-          msg.className = 'mt-3 text-sm text-red-400';
-        }
-      } catch {
-        msg.textContent = 'Network error. Please try again.';
-        msg.className = 'mt-3 text-sm text-red-400';
-      } finally {
-        btn.disabled = false;
-        btn.textContent = 'Join waitlist';
+      noteStarter.textContent = isYearly ? 'Billed annually at $468/year' : '';
+      notePro.textContent = isYearly ? 'Billed annually at $1,428/year' : '';
+
+      toggle.setAttribute('aria-checked', String(isYearly));
+
+      if (isYearly) {
+        dot.classList.remove('translate-x-0.5');
+        dot.classList.add('translate-x-[1.375rem]');
+        dot.classList.remove('bg-text-secondary');
+        dot.classList.add('bg-accent-green');
+        labelYearly.classList.remove('text-text-secondary');
+        labelYearly.classList.add('text-text-primary');
+        labelMonthly.classList.remove('text-text-primary');
+        labelMonthly.classList.add('text-text-secondary');
+      } else {
+        dot.classList.remove('translate-x-[1.375rem]');
+        dot.classList.add('translate-x-0.5');
+        dot.classList.remove('bg-accent-green');
+        dot.classList.add('bg-text-secondary');
+        labelMonthly.classList.remove('text-text-secondary');
+        labelMonthly.classList.add('text-text-primary');
+        labelYearly.classList.remove('text-text-primary');
+        labelYearly.classList.add('text-text-secondary');
       }
+    }
+
+    toggle.addEventListener('click', () => {
+      isYearly = !isYearly;
+      updatePricing();
     });
   </script>
 
